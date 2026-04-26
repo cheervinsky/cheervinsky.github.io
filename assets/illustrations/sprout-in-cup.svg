@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 200" aria-label="A hand drawn line illustration of a sprout in a cup">
+  <g fill="none" stroke="#1E1A17" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    
+    <path d="M80 120h120l-10 60a8 8 0 0 1-8 6H98a8 8 0 0 1-8-6z"></path>
+    <ellipse cx="140" cy="120" rx="60" ry="8"></ellipse>
+    
+    <path d="M140 120v-60"></path>
+    
+    <path d="M140 92c0-18 14-28 30-28-2 18-14 28-30 28Z"></path>
+    <path d="M140 78c0-14-12-22-26-22 2 14 12 22 26 22Z"></path>
+    <path d="M140 62c0-10 8-16 18-16-1 10-8 16-18 16Z"></path>
+    
+    <path d="M40 190h200"></path>
+    
+    <circle cx="230" cy="40" r="10"></circle>
+    <path d="M230 22v-6"></path>
+    <path d="M230 58v6"></path>
+    <path d="M212 40h-6"></path>
+    <path d="M248 40h6"></path>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" aria-label="A hand drawn line illustration of a person reading by a window">
+  <g fill="none" stroke="#1E1A17" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    
+    <rect x="30" y="24" width="140" height="160" rx="4"></rect>
+    <path d="M100 24v160"></path>
+    <path d="M30 104h140"></path>
+    
+    <path d="M34 148c18-10 34-4 50-2 18 2 36-8 54-4 14 3 24 6 28 10"></path>
+    <circle cx="134" cy="60" r="14"></circle>
+    
+    <path d="M196 86c18 6 30 22 30 42v52"></path>
+    <path d="M196 86v94"></path>
+    
+    <path d="M214 118c0-10 8-18 18-18s18 8 18 18v26"></path>
+    <circle cx="232" cy="98" r="10"></circle>
+    
+    <path d="M206 148l22-6 22 6-22 8z"></path>
+    <path d="M228 142v14"></path>
+    
+    <path d="M270 150h22v18a8 8 0 0 1-8 8h-6a8 8 0 0 1-8-8z"></path>
+    <path d="M292 156h6a4 4 0 0 1 0 8h-6"></path>
+    <path d="M274 144c-2-4 2-6 0-10"></path>
+    <path d="M282 144c-2-4 2-6 0-10"></path>
+    
+    <path d="M16 198h288"></path>
+  </g>
+</svg>

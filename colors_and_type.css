@@ -1,0 +1,293 @@
+/* ============================================================
+   Cheervinsky Design System — foundational tokens
+   Import this file once; everything else reads from these vars.
+   ============================================================ */
+
+/* --- Fonts (Google Fonts CDN — substitution flagged; see README) --- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300..800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* -------------------- COLORS -------------------- */
+
+  /* Canvas — warm paper, not white */
+  --paper:    #F3EADB;
+  --paper-2:  #EADFCB;
+  --paper-3:  #E0D3B8;
+
+  /* Ink — warm black, never pure */
+  --ink:      #1E1A17;
+  --ink-2:    #4B423A;
+  --ink-3:    #8A7F72;
+  --rule:     #D6C8AF;
+
+  /* The single brand accent */
+  --honey:       #E9873B;
+  --honey-ink:   #7A3E10;
+  --honey-wash:  #FADFB9;
+
+  /* Product tints — one per app, never mixed */
+  --dawn:     #F2B8A2;
+  --kiln:     #C0532A;
+  --mira:     #6E7F5C;
+  --sprout:   #7FA27E;
+  --confetti: #E8C547;
+
+  /* Semantic */
+  --ok:       #5E8C4C;
+  --warn:     #C98A2B;
+  --danger:   #B4432B;
+  --info:     #4E6B7F;
+
+  /* Semantic aliases (use these in components) */
+  --bg:          var(--paper);
+  --bg-raised:   var(--paper-2);
+  --bg-sunken:   var(--paper-3);
+  --fg:          var(--ink);
+  --fg-muted:    var(--ink-2);
+  --fg-subtle:   var(--ink-3);
+  --border:      var(--rule);
+  --accent:      var(--honey);
+  --accent-ink:  var(--honey-ink);
+  --accent-wash: var(--honey-wash);
+
+  /* -------------------- TYPOGRAPHY -------------------- */
+  --font-display: 'Fraunces', ui-serif, 'Iowan Old Style', Georgia, serif;
+  --font-body:    'Inter', ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Scale — rem (16px root). Use these, not raw px. */
+  --fs-12: 0.750rem;
+  --fs-14: 0.875rem;
+  --fs-16: 1.000rem;
+  --fs-18: 1.125rem;
+  --fs-22: 1.375rem;
+  --fs-28: 1.750rem;
+  --fs-36: 2.250rem;
+  --fs-48: 3.000rem;
+  --fs-64: 4.000rem;
+  --fs-80: 5.000rem;
+
+  --lh-tight:   1.15;
+  --lh-snug:    1.30;
+  --lh-ui:      1.35;
+  --lh-body:    1.55;
+
+  --tr-tight:   -0.02em;
+  --tr-normal:   0;
+  --tr-loose:    0.02em;
+  --tr-label:    0.06em;
+
+  /* -------------------- SPACING -------------------- */
+  --s-2:   2px;
+  --s-4:   4px;
+  --s-8:   8px;
+  --s-12: 12px;
+  --s-16: 16px;
+  --s-24: 24px;
+  --s-32: 32px;
+  --s-48: 48px;
+  --s-64: 64px;
+  --s-96: 96px;
+  --s-128: 128px;
+
+  /* -------------------- RADII -------------------- */
+  --r-xs:   4px;
+  --r-sm:   8px;
+  --r-md:  14px;
+  --r-lg:  22px;
+  --r-pill: 999px;
+
+  /* -------------------- SHADOWS -------------------- */
+  --shadow-1: 0 1px 0 rgba(30,26,23,.04), 0 2px 6px rgba(30,26,23,.06);
+  --shadow-2: 0 2px 0 rgba(30,26,23,.05), 0 10px 24px -8px rgba(30,26,23,.14);
+  --shadow-3: 0 3px 0 rgba(30,26,23,.06), 0 24px 48px -16px rgba(30,26,23,.22);
+  --shadow-inset: inset 0 1px 0 rgba(255,247,230,.9), inset 0 -1px 0 rgba(30,26,23,.06);
+  --focus-ring: 0 0 0 2px var(--paper), 0 0 0 4px rgba(233,135,59,.55);
+
+  /* -------------------- MOTION -------------------- */
+  --ease-soft:     cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.30, 1);
+  --ease-in-soft:  cubic-bezier(0.64, 0.00, 0.78, 0.00);
+
+  --dur-micro:  120ms;
+  --dur-ui:     220ms;
+  --dur-scene:  420ms;
+  --dur-ambient: 6000ms;
+
+  /* -------------------- LAYOUT -------------------- */
+  --max-marketing: 1200px;
+  --max-reading:    960px;
+  --max-prose:      640px;
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES
+   These are the defaults — components can override, but this is
+   what a bare <h1>, <p>, <a>, etc. looks like in Cheervinsky.
+   ============================================================ */
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: var(--lh-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Display / headings */
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-64);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  font-variation-settings: "opsz" 96, "SOFT" 40;
+  margin: 0 0 var(--s-24);
+  color: var(--fg);
+  text-wrap: balance;
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-48);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  font-variation-settings: "opsz" 72, "SOFT" 30;
+  margin: 0 0 var(--s-16);
+  text-wrap: balance;
+}
+
+h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-28);
+  line-height: var(--lh-snug);
+  font-variation-settings: "opsz" 36, "SOFT" 20;
+  margin: 0 0 var(--s-12);
+  text-wrap: balance;
+}
+
+h4, .h4 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-18);
+  line-height: var(--lh-ui);
+  margin: 0 0 var(--s-8);
+  letter-spacing: var(--tr-normal);
+}
+
+/* Body copy */
+p, .body {
+  font-family: var(--font-body);
+  font-size: var(--fs-16);
+  line-height: var(--lh-body);
+  color: var(--fg);
+  margin: 0 0 var(--s-16);
+  text-wrap: pretty;
+}
+
+.lead {
+  font-family: var(--font-body);
+  font-size: var(--fs-22);
+  line-height: 1.45;
+  color: var(--fg-muted);
+  margin: 0 0 var(--s-24);
+  text-wrap: pretty;
+}
+
+.small, small {
+  font-size: var(--fs-14);
+  color: var(--fg-muted);
+}
+
+.caption {
+  font-size: var(--fs-12);
+  color: var(--fg-subtle);
+  letter-spacing: var(--tr-loose);
+}
+
+.label {
+  font-size: var(--fs-12);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tr-label);
+  color: var(--fg-subtle);
+}
+
+/* Mono */
+code, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.94em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+
+code {
+  background: var(--bg-raised);
+  padding: 0.12em 0.4em;
+  border-radius: var(--r-xs);
+}
+
+/* Links */
+a {
+  color: var(--fg);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in oklab, var(--fg) 35%, transparent);
+  transition: text-decoration-thickness var(--dur-ui) var(--ease-soft),
+              text-decoration-color var(--dur-ui) var(--ease-soft);
+}
+a:hover {
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--fg);
+}
+a.accent, .link-accent { color: var(--accent-ink); }
+
+/* Horizontal rule */
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  margin: var(--s-32) 0;
+}
+
+/* Selection */
+::selection {
+  background: var(--accent-wash);
+  color: var(--ink);
+}
+
+/* Focus */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-sm);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Signature ambient loop — opt-in via class */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.015); }
+}
+.breathe { animation: breathe var(--dur-ambient) var(--ease-soft) infinite; }

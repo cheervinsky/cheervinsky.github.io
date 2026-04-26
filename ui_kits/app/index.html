@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Cheervinsky — Apps</title>
+  <link rel="stylesheet" href="../../colors_and_type.css"/>
+  <style>
+    body {
+      margin: 0; min-height: 100vh;
+      background: var(--paper);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" data-screen-label="Cheervinsky App Prototype"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="PhoneShell.jsx"></script>
+  <script type="text/babel" src="AppSwitcher.jsx"></script>
+  <script type="text/babel" src="DawnScreen.jsx"></script>
+  <script type="text/babel" src="KilnScreen.jsx"></script>
+  <script type="text/babel" src="MiraScreen.jsx"></script>
+  <script type="text/babel" src="SproutScreen.jsx"></script>
+  <script type="text/babel" src="ConfettiScreen.jsx"></script>
+
+  <script type="text/babel">
+    const App = () => {
+      const [open, setOpen] = React.useState(null);
+      const back = () => setOpen(null);
+      if (!open) return <PhoneShell><AppSwitcher onOpen={setOpen}/></PhoneShell>;
+      const titles = { dawn: 'Dawn', kiln: 'Kiln', mira: 'Mira', sprout: 'Sprout', confetti: 'Confetti' };
+      const screens = {
+        dawn: <DawnScreen/>, kiln: <KilnScreen/>, mira: <MiraScreen/>,
+        sprout: <SproutScreen/>, confetti: <ConfettiScreen/>,
+      };
+      return <PhoneShell onBack={back} title={titles[open]}>{screens[open]}</PhoneShell>;
+    };
+    const waitFor = (cond, cb) => cond() ? cb() : setTimeout(() => waitFor(cond, cb), 20);
+    waitFor(
+      () => window.PhoneShell && window.AppSwitcher && window.DawnScreen && window.KilnScreen && window.MiraScreen && window.SproutScreen && window.ConfettiScreen,
+      () => ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
+    );
+  </script>
+</body>
+</html>
