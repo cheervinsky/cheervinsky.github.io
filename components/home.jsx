@@ -12,8 +12,13 @@ function Carousel() {
       tagline: p.excerpt,
       description: p.excerpt || p.body,
       hero: p.homeImage || p.cover || 'assets/iphone-mockup.png',
+      heroPosition: p.homeImagePosition || '50% 50%',
+      heroZoom: p.homeImageZoom || 100,
       productIcon: p.productIcon || '',
-      productIconSize: Math.max(18, Math.min(60, parseInt(p.productIconSize, 10) || 34)),
+      productIconSize: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 34)),
+      productIconGap: Math.max(-80, Math.min(80, parseInt(p.productIconGap, 10) || 8)),
+      productIconShiftX: Math.max(-120, Math.min(120, parseInt(p.productIconShiftX, 10) || 0)),
+      productIconShiftY: Math.max(-90, Math.min(90, parseInt(p.productIconShiftY, 10) || 0)),
       appStore: p.appStore || '',
       googlePlay: p.googlePlay || '',
       eyebrow: 'PRODUCT',
@@ -68,7 +73,7 @@ function Carousel() {
       <div className="carousel">
         <div className="phone-stage">
           <div className="phone-shadow" />
-          <PhoneMockup src={product.hero} alt={product.name} className={phoneClass} />
+          <PhoneMockup src={product.hero} alt={product.name} className={phoneClass} innerStyle={getHomeImageStyle(product.heroPosition, product.heroZoom)} />
         </div>
         <div className={'glass carousel-glass' + glassClass}>
           <div className="carousel-glass-content">
@@ -81,17 +86,19 @@ function Carousel() {
                       className="carousel-title-icon"
                       src={product.productIcon}
                       alt=""
-                      style={{ width: product.productIconSize, height: product.productIconSize }}
+                      style={{
+                        width: product.productIconSize,
+                        height: product.productIconSize,
+                        marginRight: product.productIconGap,
+                        transform: `translate(${product.productIconShiftX}px, ${product.productIconShiftY}px)`,
+                      }}
                     />
-                  ) : (
-                    <span className="ink-mark" style={{ color: 'var(--honey-deep)', fontStyle: 'italic' }}>{product.monogram || product.name[0]}</span>
-                  )}
-                  {product.productIcon ? product.name : product.name.slice(1)}
+                  ) : null}
+                  {product.name}
                 </a>
               ) : (
                 <>
-                  <span className="ink-mark" style={{ color: 'var(--honey-deep)', fontStyle: 'italic' }}>{product.monogram || product.name[0]}</span>
-                  {product.name.slice(1)}
+                  {product.name}
                 </>
               )}
             </h2>
@@ -105,7 +112,7 @@ function Carousel() {
                 <>
                   {product.googlePlay ? <StoreButton kind="google" href={product.googlePlay} /> : null}
                   {product.appStore ? <StoreButton kind="apple" href={product.appStore} /> : null}
-                  <a href={product.detailHref} className="btn dark">Read about product</a>
+                  <a href={product.detailHref} className="btn dark product-read-about-btn">Read about product</a>
                 </>
               ) : (
                 <>
@@ -146,7 +153,12 @@ function PinnedPost() {
       <div className="pinned-blog">
         <div className="phone-stage pinned-phone-stage">
           <div className="phone-shadow" />
-          <PhoneMockup src={post.homeImage || post.cover || 'assets/iphone-mockup.png'} alt={post.title} className="pinned-phone" />
+          <PhoneMockup
+            src={post.homeImage || post.cover || 'assets/iphone-mockup.png'}
+            alt={post.title}
+            className="pinned-phone"
+            innerStyle={getHomeImageStyle(post.homeImagePosition, post.homeImageZoom)}
+          />
         </div>
         <div className="glass pinned-glass">
           <div className="carousel-glass-content pinned-glass-content">
@@ -167,39 +179,15 @@ function FeaturesStrip() {
   const items = [
     {
       title: 'FIRST EMDR AND BREATHING APP',
-      icon: (
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <circle cx="50" cy="55" r="22" />
-          <text x="50" y="62" textAnchor="middle" fontFamily="Vollkorn SC, serif" fontSize="22" fontWeight="700" fill="currentColor" stroke="none">1</text>
-          <path d="M20 78 Q35 70 50 76 Q65 82 80 78" />
-          <path d="M22 80 Q30 92 38 86" />
-          <path d="M78 80 Q70 92 62 86" />
-          <path d="M30 65 Q24 50 30 38" />
-          <path d="M70 65 Q76 50 70 38" />
-        </svg>
-      )
+      icon: <img src="assets/first_place_icon.png" alt="" />
     },
     {
       title: 'THE MOST UNIQUE APP',
-      icon: (
-        <svg className="crown-icon" viewBox="0 0 100 100" fill="currentColor">
-          <path d="M50 22 c-3 -8 -10 -10 -14 -10 c2 4 4 8 4 12 c-6 -2 -12 0 -16 4 c4 0 8 2 10 4 c-4 4 -6 10 -4 16 c2 -3 6 -6 10 -7 c-2 6 0 14 4 18 c0 -5 2 -10 5 -13 c2 6 8 12 14 13 c-3 -4 -5 -8 -5 -13 c5 1 11 -1 14 -5 c-4 0 -8 -2 -10 -5 c4 -4 6 -10 4 -16 c-3 3 -7 5 -11 6 c2 -5 0 -11 -5 -14 z M50 65 c-3 0 -5 8 -5 18 h10 c0 -10 -2 -18 -5 -18 z" />
-        </svg>
-      )
+      icon: <img src="assets/unique_apps_icon.png" alt="" />
     },
     {
       title: 'REAL IMPROVEMENTS OF YOUR LIFE',
-      icon: (
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M50 70 V30" strokeWidth="2" />
-          <path d="M50 30 Q42 36 38 44 Q34 52 38 58 Q42 60 46 56 Q50 50 50 30" fill="currentColor" stroke="none" opacity="0.85" />
-          <path d="M50 30 Q58 36 62 44 Q66 52 62 58 Q58 60 54 56 Q50 50 50 30" fill="currentColor" stroke="none" opacity="0.85" />
-          <path d="M30 70 Q35 65 40 70 Q45 75 40 80" />
-          <path d="M70 70 Q65 65 60 70 Q55 75 60 80" />
-          <rect x="34" y="78" width="32" height="6" rx="2" fill="currentColor" stroke="none" />
-          <path d="M28 84 H72" strokeWidth="2" />
-        </svg>
-      )
+      icon: <img src="assets/user_selection_icon.png" alt="" />
     }
   ];
   return (

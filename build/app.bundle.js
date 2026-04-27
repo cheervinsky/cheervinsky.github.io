@@ -300,7 +300,12 @@ Finally. Markdown, PDF, or plain text. Your data, your file, no account required
         coverPosition: "50% 0%",
         coverZoom: 100,
         homeImage: "",
+        homeImagePosition: "50% 50%",
+        homeImageZoom: 100,
         productIconSize: 34,
+        productIconGap: 8,
+        productIconShiftX: 0,
+        productIconShiftY: 0,
         ...p
       }));
       return {
@@ -384,7 +389,12 @@ Finally. Markdown, PDF, or plain text. Your data, your file, no account required
         coverPosition: "50% 0%",
         coverZoom: 100,
         homeImage: "",
+        homeImagePosition: "50% 50%",
+        homeImageZoom: 100,
         productIconSize: 34,
+        productIconGap: 8,
+        productIconShiftX: 0,
+        productIconShiftY: 0,
         ...p
       })) : []
     };
@@ -660,8 +670,13 @@ Finally. Markdown, PDF, or plain text. Your data, your file, no account required
         coverPosition: post.coverPosition || "50% 0%",
         coverZoom: post.coverZoom || 100,
         homeImage: post.homeImage || "",
+        homeImagePosition: post.homeImagePosition || "50% 50%",
+        homeImageZoom: post.homeImageZoom || 100,
         productIcon: post.productIcon || "",
         productIconSize: post.productIconSize || 34,
+        productIconGap: post.productIconGap || 8,
+        productIconShiftX: post.productIconShiftX || 0,
+        productIconShiftY: post.productIconShiftY || 0,
         appStore: post.appStore || "",
         googlePlay: post.googlePlay || "",
         includeInCarousel: !!post.includeInCarousel,
@@ -755,10 +770,10 @@ function CrowLogo({ size = 84 }) {
   );
 }
 function IconYouTube() {
-  return /* @__PURE__ */ React.createElement("svg", { width: "22", height: "22", viewBox: "0 0 24 24", fill: "currentColor" }, /* @__PURE__ */ React.createElement("rect", { x: "2", y: "6", width: "20", height: "12", rx: "3" }), /* @__PURE__ */ React.createElement("polygon", { points: "10,9 16,12 10,15", fill: "#FFC72A" }));
+  return /* @__PURE__ */ React.createElement("img", { src: "assets/youtube_icon.png", alt: "" });
 }
 function IconInstagram() {
-  return /* @__PURE__ */ React.createElement("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ React.createElement("rect", { x: "3", y: "3", width: "18", height: "18", rx: "5" }), /* @__PURE__ */ React.createElement("circle", { cx: "12", cy: "12", r: "4" }), /* @__PURE__ */ React.createElement("circle", { cx: "17.5", cy: "6.5", r: "0.8", fill: "currentColor" }));
+  return /* @__PURE__ */ React.createElement("img", { src: "assets/instagram_icon.png", alt: "" });
 }
 function IconArrow({ left }) {
   return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", strokeLinejoin: "round", style: { transform: left ? "rotate(180deg)" : "" } }, /* @__PURE__ */ React.createElement("path", { d: "M5 12h14M13 5l7 7-7 7" }));
@@ -893,7 +908,7 @@ function PhoneMockup({ src, alt = "", className = "", innerStyle = {} }) {
         left: "5.4%",
         width: "89%",
         height: "94.8%",
-        objectFit: "cover",
+        objectFit: "contain",
         borderRadius: "7%",
         zIndex: 1,
         ...innerStyle
@@ -938,8 +953,13 @@ function Carousel() {
     tagline: p.excerpt,
     description: p.excerpt || p.body,
     hero: p.homeImage || p.cover || "assets/iphone-mockup.png",
+    heroPosition: p.homeImagePosition || "50% 50%",
+    heroZoom: p.homeImageZoom || 100,
     productIcon: p.productIcon || "",
-    productIconSize: Math.max(18, Math.min(60, parseInt(p.productIconSize, 10) || 34)),
+    productIconSize: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 34)),
+    productIconGap: Math.max(-80, Math.min(80, parseInt(p.productIconGap, 10) || 8)),
+    productIconShiftX: Math.max(-120, Math.min(120, parseInt(p.productIconShiftX, 10) || 0)),
+    productIconShiftY: Math.max(-90, Math.min(90, parseInt(p.productIconShiftY, 10) || 0)),
     appStore: p.appStore || "",
     googlePlay: p.googlePlay || "",
     eyebrow: "PRODUCT",
@@ -979,36 +999,49 @@ function Carousel() {
   const phoneClass = phase === "out" ? "exiting" : phase === "enter" ? "entering" : "";
   const glassClass = phase === "out" ? " exiting" : phase === "enter" ? " entering" : "";
   const loopLineClass = phase === "in" ? "carousel-loop-line" : "carousel-loop-line visible";
-  return /* @__PURE__ */ React.createElement("section", { className: "section" }, /* @__PURE__ */ React.createElement("div", { className: "carousel" }, /* @__PURE__ */ React.createElement("div", { className: "phone-stage" }, /* @__PURE__ */ React.createElement("div", { className: "phone-shadow" }), /* @__PURE__ */ React.createElement(PhoneMockup, { src: product.hero, alt: product.name, className: phoneClass })), /* @__PURE__ */ React.createElement("div", { className: "glass carousel-glass" + glassClass }, /* @__PURE__ */ React.createElement("div", { className: "carousel-glass-content" }, /* @__PURE__ */ React.createElement("p", { className: "glass-eyebrow" }, product.eyebrow || "CHEERVINSKY APP"), /* @__PURE__ */ React.createElement("h2", null, product.detailHref ? /* @__PURE__ */ React.createElement("a", { href: product.detailHref, className: "carousel-title-link" }, product.productIcon ? /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("section", { className: "section" }, /* @__PURE__ */ React.createElement("div", { className: "carousel" }, /* @__PURE__ */ React.createElement("div", { className: "phone-stage" }, /* @__PURE__ */ React.createElement("div", { className: "phone-shadow" }), /* @__PURE__ */ React.createElement(PhoneMockup, { src: product.hero, alt: product.name, className: phoneClass, innerStyle: getHomeImageStyle(product.heroPosition, product.heroZoom) })), /* @__PURE__ */ React.createElement("div", { className: "glass carousel-glass" + glassClass }, /* @__PURE__ */ React.createElement("div", { className: "carousel-glass-content" }, /* @__PURE__ */ React.createElement("p", { className: "glass-eyebrow" }, product.eyebrow || "CHEERVINSKY APP"), /* @__PURE__ */ React.createElement("h2", null, product.detailHref ? /* @__PURE__ */ React.createElement("a", { href: product.detailHref, className: "carousel-title-link" }, product.productIcon ? /* @__PURE__ */ React.createElement(
     "img",
     {
       className: "carousel-title-icon",
       src: product.productIcon,
       alt: "",
-      style: { width: product.productIconSize, height: product.productIconSize }
+      style: {
+        width: product.productIconSize,
+        height: product.productIconSize,
+        marginRight: product.productIconGap,
+        transform: `translate(${product.productIconShiftX}px, ${product.productIconShiftY}px)`
+      }
     }
-  ) : /* @__PURE__ */ React.createElement("span", { className: "ink-mark", style: { color: "var(--honey-deep)", fontStyle: "italic" } }, product.monogram || product.name[0]), product.productIcon ? product.name : product.name.slice(1)) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { className: "ink-mark", style: { color: "var(--honey-deep)", fontStyle: "italic" } }, product.monogram || product.name[0]), product.name.slice(1))), product.detailHref ? /* @__PURE__ */ React.createElement("a", { href: product.detailHref, className: "carousel-description-link" }, product.description) : /* @__PURE__ */ React.createElement("p", null, product.description), /* @__PURE__ */ React.createElement("div", { className: "cta-row" }, product.detailHref ? /* @__PURE__ */ React.createElement(React.Fragment, null, product.googlePlay ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: product.googlePlay }) : null, product.appStore ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: product.appStore }) : null, /* @__PURE__ */ React.createElement("a", { href: product.detailHref, className: "btn dark" }, "Read about product")) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: product.googlePlay }), /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: product.appStore }))))), /* @__PURE__ */ React.createElement("div", { className: loopLineClass, "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 120 110", preserveAspectRatio: "xMidYMid meet" }, /* @__PURE__ */ React.createElement("path", { d: "M60 94 C34 73, 18 56, 18 38 C18 23, 28 14, 41 14 C50 14, 56 20, 60 28 C64 20, 70 14, 79 14 C92 14, 102 23, 102 38 C102 56, 86 73, 60 94 Z" })))), /* @__PURE__ */ React.createElement("div", { className: "carousel-controls" }, /* @__PURE__ */ React.createElement("button", { className: "arrow-btn", onClick: () => goto(idx - 1), "aria-label": "Previous" }, /* @__PURE__ */ React.createElement(IconArrow, { left: true })), /* @__PURE__ */ React.createElement("div", { className: "dots" }, products.map((_, i) => /* @__PURE__ */ React.createElement("button", { key: i, className: i === idx ? "active" : "", onClick: () => goto(i), "aria-label": "Go to slide " + (i + 1) }))), /* @__PURE__ */ React.createElement("button", { className: "arrow-btn", onClick: () => goto(idx + 1), "aria-label": "Next" }, /* @__PURE__ */ React.createElement(IconArrow, null))));
+  ) : null, product.name) : /* @__PURE__ */ React.createElement(React.Fragment, null, product.name)), product.detailHref ? /* @__PURE__ */ React.createElement("a", { href: product.detailHref, className: "carousel-description-link" }, product.description) : /* @__PURE__ */ React.createElement("p", null, product.description), /* @__PURE__ */ React.createElement("div", { className: "cta-row" }, product.detailHref ? /* @__PURE__ */ React.createElement(React.Fragment, null, product.googlePlay ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: product.googlePlay }) : null, product.appStore ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: product.appStore }) : null, /* @__PURE__ */ React.createElement("a", { href: product.detailHref, className: "btn dark product-read-about-btn" }, "Read about product")) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: product.googlePlay }), /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: product.appStore }))))), /* @__PURE__ */ React.createElement("div", { className: loopLineClass, "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 120 110", preserveAspectRatio: "xMidYMid meet" }, /* @__PURE__ */ React.createElement("path", { d: "M60 94 C34 73, 18 56, 18 38 C18 23, 28 14, 41 14 C50 14, 56 20, 60 28 C64 20, 70 14, 79 14 C92 14, 102 23, 102 38 C102 56, 86 73, 60 94 Z" })))), /* @__PURE__ */ React.createElement("div", { className: "carousel-controls" }, /* @__PURE__ */ React.createElement("button", { className: "arrow-btn", onClick: () => goto(idx - 1), "aria-label": "Previous" }, /* @__PURE__ */ React.createElement(IconArrow, { left: true })), /* @__PURE__ */ React.createElement("div", { className: "dots" }, products.map((_, i) => /* @__PURE__ */ React.createElement("button", { key: i, className: i === idx ? "active" : "", onClick: () => goto(i), "aria-label": "Go to slide " + (i + 1) }))), /* @__PURE__ */ React.createElement("button", { className: "arrow-btn", onClick: () => goto(idx + 1), "aria-label": "Next" }, /* @__PURE__ */ React.createElement(IconArrow, null))));
 }
 function PinnedPost() {
   const store = useStore();
   const publishedPosts = store.posts.filter((p) => p.published !== false && p.status !== "product");
   const post = publishedPosts.find((p) => p.pinned) || publishedPosts[0];
   if (!post) return null;
-  return /* @__PURE__ */ React.createElement("section", { className: "section" }, /* @__PURE__ */ React.createElement(CurvyDivider, null), /* @__PURE__ */ React.createElement("div", { className: "pinned-blog" }, /* @__PURE__ */ React.createElement("div", { className: "phone-stage pinned-phone-stage" }, /* @__PURE__ */ React.createElement("div", { className: "phone-shadow" }), /* @__PURE__ */ React.createElement(PhoneMockup, { src: post.homeImage || post.cover || "assets/iphone-mockup.png", alt: post.title, className: "pinned-phone" })), /* @__PURE__ */ React.createElement("div", { className: "glass pinned-glass" }, /* @__PURE__ */ React.createElement("div", { className: "carousel-glass-content pinned-glass-content" }, /* @__PURE__ */ React.createElement("p", { className: "glass-eyebrow" }, "FROM THE BLOG \xB7 PINNED"), /* @__PURE__ */ React.createElement("h2", null, post.title), /* @__PURE__ */ React.createElement("p", null, post.excerpt), /* @__PURE__ */ React.createElement("div", { className: "cta-row pinned-cta-row" }, /* @__PURE__ */ React.createElement("a", { href: "#post/" + post.id, className: "btn" }, "Read in Blog"))))));
+  return /* @__PURE__ */ React.createElement("section", { className: "section" }, /* @__PURE__ */ React.createElement(CurvyDivider, null), /* @__PURE__ */ React.createElement("div", { className: "pinned-blog" }, /* @__PURE__ */ React.createElement("div", { className: "phone-stage pinned-phone-stage" }, /* @__PURE__ */ React.createElement("div", { className: "phone-shadow" }), /* @__PURE__ */ React.createElement(
+    PhoneMockup,
+    {
+      src: post.homeImage || post.cover || "assets/iphone-mockup.png",
+      alt: post.title,
+      className: "pinned-phone",
+      innerStyle: getHomeImageStyle(post.homeImagePosition, post.homeImageZoom)
+    }
+  )), /* @__PURE__ */ React.createElement("div", { className: "glass pinned-glass" }, /* @__PURE__ */ React.createElement("div", { className: "carousel-glass-content pinned-glass-content" }, /* @__PURE__ */ React.createElement("p", { className: "glass-eyebrow" }, "FROM THE BLOG \xB7 PINNED"), /* @__PURE__ */ React.createElement("h2", null, post.title), /* @__PURE__ */ React.createElement("p", null, post.excerpt), /* @__PURE__ */ React.createElement("div", { className: "cta-row pinned-cta-row" }, /* @__PURE__ */ React.createElement("a", { href: "#post/" + post.id, className: "btn" }, "Read in Blog"))))));
 }
 function FeaturesStrip() {
   const items = [
     {
       title: "FIRST EMDR AND BREATHING APP",
-      icon: /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 100 100", fill: "none", stroke: "currentColor", strokeWidth: "1.5" }, /* @__PURE__ */ React.createElement("circle", { cx: "50", cy: "55", r: "22" }), /* @__PURE__ */ React.createElement("text", { x: "50", y: "62", textAnchor: "middle", fontFamily: "Vollkorn SC, serif", fontSize: "22", fontWeight: "700", fill: "currentColor", stroke: "none" }, "1"), /* @__PURE__ */ React.createElement("path", { d: "M20 78 Q35 70 50 76 Q65 82 80 78" }), /* @__PURE__ */ React.createElement("path", { d: "M22 80 Q30 92 38 86" }), /* @__PURE__ */ React.createElement("path", { d: "M78 80 Q70 92 62 86" }), /* @__PURE__ */ React.createElement("path", { d: "M30 65 Q24 50 30 38" }), /* @__PURE__ */ React.createElement("path", { d: "M70 65 Q76 50 70 38" }))
+      icon: /* @__PURE__ */ React.createElement("img", { src: "assets/first_place_icon.png", alt: "" })
     },
     {
       title: "THE MOST UNIQUE APP",
-      icon: /* @__PURE__ */ React.createElement("svg", { className: "crown-icon", viewBox: "0 0 100 100", fill: "currentColor" }, /* @__PURE__ */ React.createElement("path", { d: "M50 22 c-3 -8 -10 -10 -14 -10 c2 4 4 8 4 12 c-6 -2 -12 0 -16 4 c4 0 8 2 10 4 c-4 4 -6 10 -4 16 c2 -3 6 -6 10 -7 c-2 6 0 14 4 18 c0 -5 2 -10 5 -13 c2 6 8 12 14 13 c-3 -4 -5 -8 -5 -13 c5 1 11 -1 14 -5 c-4 0 -8 -2 -10 -5 c4 -4 6 -10 4 -16 c-3 3 -7 5 -11 6 c2 -5 0 -11 -5 -14 z M50 65 c-3 0 -5 8 -5 18 h10 c0 -10 -2 -18 -5 -18 z" }))
+      icon: /* @__PURE__ */ React.createElement("img", { src: "assets/unique_apps_icon.png", alt: "" })
     },
     {
       title: "REAL IMPROVEMENTS OF YOUR LIFE",
-      icon: /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 100 100", fill: "none", stroke: "currentColor", strokeWidth: "1.5" }, /* @__PURE__ */ React.createElement("path", { d: "M50 70 V30", strokeWidth: "2" }), /* @__PURE__ */ React.createElement("path", { d: "M50 30 Q42 36 38 44 Q34 52 38 58 Q42 60 46 56 Q50 50 50 30", fill: "currentColor", stroke: "none", opacity: "0.85" }), /* @__PURE__ */ React.createElement("path", { d: "M50 30 Q58 36 62 44 Q66 52 62 58 Q58 60 54 56 Q50 50 50 30", fill: "currentColor", stroke: "none", opacity: "0.85" }), /* @__PURE__ */ React.createElement("path", { d: "M30 70 Q35 65 40 70 Q45 75 40 80" }), /* @__PURE__ */ React.createElement("path", { d: "M70 70 Q65 65 60 70 Q55 75 60 80" }), /* @__PURE__ */ React.createElement("rect", { x: "34", y: "78", width: "32", height: "6", rx: "2", fill: "currentColor", stroke: "none" }), /* @__PURE__ */ React.createElement("path", { d: "M28 84 H72", strokeWidth: "2" }))
+      icon: /* @__PURE__ */ React.createElement("img", { src: "assets/user_selection_icon.png", alt: "" })
     }
   ];
   return /* @__PURE__ */ React.createElement("section", { className: "features-strip" }, /* @__PURE__ */ React.createElement("div", { className: "features-grid" }, items.map((it, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: "feature" }, /* @__PURE__ */ React.createElement("div", { className: "ico" }, it.icon), /* @__PURE__ */ React.createElement("h3", null, it.title)))));
@@ -1087,9 +1120,21 @@ function BlogPage() {
   const currentPage = Math.min(page, totalPages);
   const visiblePosts = posts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   return /* @__PURE__ */ React.createElement("div", { className: "page" }, /* @__PURE__ */ React.createElement("section", { className: "blog-hero" }, /* @__PURE__ */ React.createElement("h1", null, "Blog"), /* @__PURE__ */ React.createElement("p", null, "Letters from the studio \u2014 releases, design notes, and the occasional thought about what we're trying to make.")), /* @__PURE__ */ React.createElement("div", { className: "blog-toolbar" }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Vollkorn SC', serif", letterSpacing: "0.08em", fontSize: 13, color: "var(--ink-2)" } }, posts.length, " ", posts.length === 1 ? "POST" : "POSTS"), /* @__PURE__ */ React.createElement(PaginationControls, { currentPage, totalPages, onPageChange: setPage, label: "Blog pagination top" }), totalPages > 1 && /* @__PURE__ */ React.createElement("span", { className: "blog-page-count" }, "Page ", currentPage, " of ", totalPages)), /* @__PURE__ */ React.createElement("div", { className: "blog-grid" }, visiblePosts.map((p) => {
-    const previewSrc = p.homeImage || p.cover;
-    const usingCover = !p.homeImage && !!p.cover;
-    return /* @__PURE__ */ React.createElement("a", { key: p.id, className: "post-card", href: "#post/" + p.id }, /* @__PURE__ */ React.createElement("div", { className: "post-cover" }, previewSrc ? /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(previewSrc), alt: "", style: usingCover ? getCoverImageStyle(p.coverPosition, p.coverZoom) : { width: "100%", height: "100%", objectFit: "cover" } }) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", height: "100%", display: "grid", placeItems: "center", fontFamily: "'Vollkorn SC', serif", fontSize: 48, color: "rgba(0,0,0,0.2)" } }, p.title[0])), /* @__PURE__ */ React.createElement("div", { className: "body" }, /* @__PURE__ */ React.createElement("div", { className: "meta" }, p.pinned && /* @__PURE__ */ React.createElement("span", { className: "pinned" }, "PINNED"), /* @__PURE__ */ React.createElement("span", null, formatDate(p.date)), /* @__PURE__ */ React.createElement("span", null, "\xB7"), /* @__PURE__ */ React.createElement("span", null, p.author)), /* @__PURE__ */ React.createElement("h3", null, p.title), /* @__PURE__ */ React.createElement("p", null, p.excerpt), /* @__PURE__ */ React.createElement("span", { className: "read-more" }, "Read more \u2192")));
+    const previewSrc = p.cover;
+    return /* @__PURE__ */ React.createElement("a", { key: p.id, className: "post-card", href: "#post/" + p.id }, /* @__PURE__ */ React.createElement("div", { className: "post-cover" }, previewSrc ? /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(previewSrc), alt: "", style: getCoverImageStyle(p.coverPosition, p.coverZoom) }) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", height: "100%", display: "grid", placeItems: "center", fontFamily: "'Vollkorn SC', serif", fontSize: 48, color: "rgba(0,0,0,0.2)" } }, p.title[0])), /* @__PURE__ */ React.createElement("div", { className: "body" }, /* @__PURE__ */ React.createElement("div", { className: "meta" }, p.pinned && /* @__PURE__ */ React.createElement("span", { className: "pinned" }, "PINNED"), /* @__PURE__ */ React.createElement("span", null, formatDate(p.date)), /* @__PURE__ */ React.createElement("span", null, "\xB7"), /* @__PURE__ */ React.createElement("span", null, p.author)), /* @__PURE__ */ React.createElement("h3", { className: "list-card-title" }, p.productIcon ? /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        className: "list-card-title-icon",
+        src: resolveImageRef(p.productIcon),
+        alt: "",
+        style: {
+          width: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 26)),
+          height: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 26)),
+          marginRight: getProductIconGap(p.productIconGap),
+          transform: `translate(${getProductIconShiftX(p.productIconShiftX)}px, ${getProductIconShiftY(p.productIconShiftY)}px)`
+        }
+      }
+    ) : null, p.title), /* @__PURE__ */ React.createElement("p", null, p.excerpt), /* @__PURE__ */ React.createElement("span", { className: "read-more" }, "Read more \u2192")));
   })), /* @__PURE__ */ React.createElement(PaginationControls, { currentPage, totalPages, onPageChange: setPage, label: "Blog pagination bottom" }));
 }
 function formatDate(iso) {
@@ -1132,6 +1177,43 @@ function getCoverImageStyle(position, zoom, extra = {}) {
     transformOrigin: coverPosition,
     ...extra
   };
+}
+function getHomeImagePosition(position) {
+  return /^-?\d{1,3}% -?\d{1,3}%$/.test(position || "") ? position : "50% 50%";
+}
+function getHomeImageCrop(position) {
+  const [x, y] = getHomeImagePosition(position).split(" ").map((value) => parseInt(value, 10));
+  return { x, y };
+}
+function setHomeImageCropAxis(position, axis, value) {
+  const crop = getHomeImageCrop(position);
+  const nextValue = Math.min(180, Math.max(-80, parseInt(value, 10) || 0));
+  return axis === "x" ? `${nextValue}% ${crop.y}%` : `${crop.x}% ${nextValue}%`;
+}
+function getHomeImageZoom(zoom) {
+  return Math.min(700, Math.max(30, parseInt(zoom, 10) || 100));
+}
+function getHomeImageStyle(position, zoom, extra = {}) {
+  const imagePosition = getHomeImagePosition(position);
+  return {
+    objectPosition: imagePosition,
+    transform: `scale(${getHomeImageZoom(zoom) / 100})`,
+    transformOrigin: imagePosition,
+    ...extra
+  };
+}
+function getProductIconShiftX(value) {
+  return Math.max(-120, Math.min(120, parseInt(value, 10) || 0));
+}
+function getProductIconShiftY(value) {
+  return Math.max(-90, Math.min(90, parseInt(value, 10) || 0));
+}
+function getProductIconGap(value) {
+  return Math.max(-80, Math.min(80, parseInt(value, 10) || 8));
+}
+function warnIfJpegUpload(file, contextLabel) {
+  if (!file || file.type !== "image/jpeg") return;
+  alert(`${contextLabel}: this file is JPEG, and JPEG cannot keep transparent background. Please use PNG with alpha for transparent areas.`);
 }
 function renderInlineText(text) {
   const parts = [];
@@ -1201,7 +1283,7 @@ function MediaAsset({ id, alt = "" }) {
   return /* @__PURE__ */ React.createElement("img", { src, alt });
 }
 function parseMediaOptions(parts) {
-  const options = { caption: "", sideText: "", size: "full", align: "center", wrap: false, columns: 2 };
+  const options = { caption: "", sideText: "", size: "full", align: "center", wrap: false, shadow: false, columns: 2 };
   parts.forEach((part) => {
     const value = (part || "").trim();
     if (!value) return;
@@ -1216,6 +1298,7 @@ function parseMediaOptions(parts) {
     if (key === "size" && ["small", "medium", "large", "full"].includes(optionValue)) options.size = optionValue;
     if (key === "align" && ["left", "center", "right"].includes(optionValue)) options.align = optionValue;
     if (key === "wrap") options.wrap = ["true", "yes", "1"].includes(optionValue);
+    if (key === "shadow") options.shadow = ["true", "yes", "1"].includes(optionValue);
     if (key === "columns") options.columns = Math.min(5, Math.max(2, parseInt(optionValue, 10) || 2));
     if (key === "sidetext") {
       try {
@@ -1235,6 +1318,7 @@ function buildMediaToken(type, src, options = {}) {
     "size=" + (options.size || "full"),
     "align=" + (options.align || "center"),
     "wrap=" + !!options.wrap,
+    "shadow=" + !!options.shadow,
     type === "gallery" ? "columns=" + Math.min(5, Math.max(2, parseInt(options.columns, 10) || 2)) : "",
     options.sideText ? "sideText=" + encodeURIComponent(options.sideText) : ""
   ].filter(Boolean);
@@ -1264,10 +1348,11 @@ function renderPostBody(body, editor = {}) {
         "post-media",
         "post-media-" + options.size,
         "post-media-" + options.align,
-        options.wrap ? "post-media-wrap" : "post-media-no-wrap"
+        options.wrap ? "post-media-wrap" : "post-media-no-wrap",
+        options.shadow ? "post-media-shadow" : ""
       ].join(" ");
       const canEdit = editor.onMediaChange && editor.onMediaDelete && (type === "image" || type === "gallery");
-      const mediaFigure = /* @__PURE__ */ React.createElement("figure", { className: type === "gallery" ? "post-media post-gallery post-gallery-columns-" + options.columns : mediaClass }, type === "gallery" ? /* @__PURE__ */ React.createElement("div", { className: "post-gallery-grid" }, gallerySources.map((source, galleryIndex) => {
+      const mediaFigure = /* @__PURE__ */ React.createElement("figure", { className: type === "gallery" ? "post-media post-gallery post-gallery-columns-" + options.columns + (options.shadow ? " post-media-shadow" : "") : mediaClass }, type === "gallery" ? /* @__PURE__ */ React.createElement("div", { className: "post-gallery-grid" }, gallerySources.map((source, galleryIndex) => {
         const galleryMediaId = source.startsWith("media:") ? source.slice(6) : "";
         return /* @__PURE__ */ React.createElement(
           "div",
@@ -1310,7 +1395,14 @@ function renderPostBody(body, editor = {}) {
           allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
           allowFullScreen: true
         }
-      )) : type === "video" ? /* @__PURE__ */ React.createElement("video", { src: resolveImageRef(cleanSrc), controls: true, playsInline: true, preload: "metadata" }) : mediaId ? /* @__PURE__ */ React.createElement(MediaAsset, { id: mediaId, alt: options.caption || "" }) : /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(cleanSrc), alt: options.caption || "" }), options.caption ? /* @__PURE__ */ React.createElement("figcaption", null, options.caption) : null, canEdit && type === "gallery" ? /* @__PURE__ */ React.createElement("div", { className: "media-preview-controls" }, /* @__PURE__ */ React.createElement("label", null, "Images in row", /* @__PURE__ */ React.createElement("select", { value: options.columns, onChange: (e) => editor.onMediaChange(i, { columns: e.target.value }) }, /* @__PURE__ */ React.createElement("option", { value: "2" }, "2 images"), /* @__PURE__ */ React.createElement("option", { value: "3" }, "3 images"), /* @__PURE__ */ React.createElement("option", { value: "4" }, "4 images"), /* @__PURE__ */ React.createElement("option", { value: "5" }, "5 images"))), /* @__PURE__ */ React.createElement("label", { className: "media-preview-caption" }, "Caption", /* @__PURE__ */ React.createElement("input", { value: options.caption, onChange: (e) => editor.onMediaChange(i, { caption: e.target.value }) })), gallerySources.length < 5 ? /* @__PURE__ */ React.createElement("label", { className: "gallery-add-btn" }, "Add images", /* @__PURE__ */ React.createElement("input", { type: "file", accept: "image/*", multiple: true, onChange: (e) => editor.onGalleryAdd(i, e) })) : null, /* @__PURE__ */ React.createElement("button", { type: "button", className: "media-delete-btn", onClick: () => editor.onMediaDelete(i) }, "Delete images")) : canEdit ? /* @__PURE__ */ React.createElement("div", { className: "media-preview-controls" }, /* @__PURE__ */ React.createElement("label", null, "Size", /* @__PURE__ */ React.createElement("select", { value: options.size, onChange: (e) => editor.onMediaChange(i, { size: e.target.value }) }, /* @__PURE__ */ React.createElement("option", { value: "small" }, "Small"), /* @__PURE__ */ React.createElement("option", { value: "medium" }, "Medium"), /* @__PURE__ */ React.createElement("option", { value: "large" }, "Large"), /* @__PURE__ */ React.createElement("option", { value: "full" }, "Full"))), /* @__PURE__ */ React.createElement("label", null, "Position", /* @__PURE__ */ React.createElement("select", { value: options.align, onChange: (e) => editor.onMediaChange(i, { align: e.target.value, wrap: e.target.value === "center" ? false : options.wrap }) }, /* @__PURE__ */ React.createElement("option", { value: "left" }, "Left"), /* @__PURE__ */ React.createElement("option", { value: "center" }, "Center"), /* @__PURE__ */ React.createElement("option", { value: "right" }, "Right"))), /* @__PURE__ */ React.createElement("label", { className: "media-preview-checkbox" }, /* @__PURE__ */ React.createElement(
+      )) : type === "video" ? /* @__PURE__ */ React.createElement("video", { src: resolveImageRef(cleanSrc), controls: true, playsInline: true, preload: "metadata" }) : mediaId ? /* @__PURE__ */ React.createElement(MediaAsset, { id: mediaId, alt: options.caption || "" }) : /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(cleanSrc), alt: options.caption || "" }), options.caption ? /* @__PURE__ */ React.createElement("figcaption", null, options.caption) : null, canEdit && type === "gallery" ? /* @__PURE__ */ React.createElement("div", { className: "media-preview-controls" }, /* @__PURE__ */ React.createElement("label", null, "Images in row", /* @__PURE__ */ React.createElement("select", { value: options.columns, onChange: (e) => editor.onMediaChange(i, { columns: e.target.value }) }, /* @__PURE__ */ React.createElement("option", { value: "2" }, "2 images"), /* @__PURE__ */ React.createElement("option", { value: "3" }, "3 images"), /* @__PURE__ */ React.createElement("option", { value: "4" }, "4 images"), /* @__PURE__ */ React.createElement("option", { value: "5" }, "5 images"))), /* @__PURE__ */ React.createElement("label", { className: "media-preview-caption" }, "Caption", /* @__PURE__ */ React.createElement("input", { value: options.caption, onChange: (e) => editor.onMediaChange(i, { caption: e.target.value }) })), /* @__PURE__ */ React.createElement("label", { className: "media-preview-checkbox" }, /* @__PURE__ */ React.createElement(
+        "input",
+        {
+          type: "checkbox",
+          checked: !!options.shadow,
+          onChange: (e) => editor.onMediaChange(i, { shadow: e.target.checked })
+        }
+      ), "Drop shadow"), gallerySources.length < 5 ? /* @__PURE__ */ React.createElement("label", { className: "gallery-add-btn" }, "Add images", /* @__PURE__ */ React.createElement("input", { type: "file", accept: "image/*", multiple: true, onChange: (e) => editor.onGalleryAdd(i, e) })) : null, /* @__PURE__ */ React.createElement("button", { type: "button", className: "media-delete-btn", onClick: () => editor.onMediaDelete(i) }, "Delete images")) : canEdit ? /* @__PURE__ */ React.createElement("div", { className: "media-preview-controls" }, /* @__PURE__ */ React.createElement("label", null, "Size", /* @__PURE__ */ React.createElement("select", { value: options.size, onChange: (e) => editor.onMediaChange(i, { size: e.target.value }) }, /* @__PURE__ */ React.createElement("option", { value: "small" }, "Small"), /* @__PURE__ */ React.createElement("option", { value: "medium" }, "Medium"), /* @__PURE__ */ React.createElement("option", { value: "large" }, "Large"), /* @__PURE__ */ React.createElement("option", { value: "full" }, "Full"))), /* @__PURE__ */ React.createElement("label", null, "Position", /* @__PURE__ */ React.createElement("select", { value: options.align, onChange: (e) => editor.onMediaChange(i, { align: e.target.value, wrap: e.target.value === "center" ? false : options.wrap }) }, /* @__PURE__ */ React.createElement("option", { value: "left" }, "Left"), /* @__PURE__ */ React.createElement("option", { value: "center" }, "Center"), /* @__PURE__ */ React.createElement("option", { value: "right" }, "Right"))), /* @__PURE__ */ React.createElement("label", { className: "media-preview-checkbox" }, /* @__PURE__ */ React.createElement(
         "input",
         {
           type: "checkbox",
@@ -1318,7 +1410,14 @@ function renderPostBody(body, editor = {}) {
           disabled: options.align === "center",
           onChange: (e) => editor.onMediaChange(i, { wrap: e.target.checked })
         }
-      ), "Text beside"), /* @__PURE__ */ React.createElement("label", { className: "media-preview-caption" }, "Caption", /* @__PURE__ */ React.createElement("input", { value: options.caption, onChange: (e) => editor.onMediaChange(i, { caption: e.target.value }) })), /* @__PURE__ */ React.createElement("label", { className: "media-preview-side-text" }, "Text beside image", /* @__PURE__ */ React.createElement(
+      ), "Text beside"), /* @__PURE__ */ React.createElement("label", { className: "media-preview-checkbox" }, /* @__PURE__ */ React.createElement(
+        "input",
+        {
+          type: "checkbox",
+          checked: !!options.shadow,
+          onChange: (e) => editor.onMediaChange(i, { shadow: e.target.checked })
+        }
+      ), "Drop shadow"), /* @__PURE__ */ React.createElement("label", { className: "media-preview-caption" }, "Caption", /* @__PURE__ */ React.createElement("input", { value: options.caption, onChange: (e) => editor.onMediaChange(i, { caption: e.target.value }) })), /* @__PURE__ */ React.createElement("label", { className: "media-preview-side-text" }, "Text beside image", /* @__PURE__ */ React.createElement(
         "textarea",
         {
           value: options.sideText,
@@ -1341,8 +1440,9 @@ function renderPostBody(body, editor = {}) {
         }
       )));
     }
+    if (trim.startsWith("### ")) return /* @__PURE__ */ React.createElement("h3", { key: i }, renderInlineText(trim.slice(4)));
     if (trim.startsWith("## ")) return /* @__PURE__ */ React.createElement("h2", { key: i }, renderInlineText(trim.slice(3)));
-    if (trim.startsWith("# ")) return /* @__PURE__ */ React.createElement("h2", { key: i }, renderInlineText(trim.slice(2)));
+    if (trim.startsWith("# ")) return /* @__PURE__ */ React.createElement("h1", { key: i }, renderInlineText(trim.slice(2)));
     return /* @__PURE__ */ React.createElement("p", { key: i }, renderInlineText(trim));
   });
 }
@@ -1355,7 +1455,20 @@ function PostPage({ id }) {
   }
   const blocks = renderPostBody(post.body);
   const isProductPost = post.status === "product";
-  return /* @__PURE__ */ React.createElement("div", { className: "page post-page" }, /* @__PURE__ */ React.createElement("article", { className: "detail-content-panel" }, /* @__PURE__ */ React.createElement("a", { href: isProductPost ? "#products" : "#blog", className: "back-link" }, "\u2190 Back to ", isProductPost ? "products" : "blog"), post.cover ? /* @__PURE__ */ React.createElement("div", { className: "post-cover" }, /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(post.cover), alt: "", style: getCoverImageStyle(post.coverPosition, post.coverZoom, { width: "100%", height: "100%", borderRadius: "inherit" }) })) : null, /* @__PURE__ */ React.createElement("h1", null, post.title), /* @__PURE__ */ React.createElement("div", { className: "meta" }, isProductPost ? "PRODUCT \xB7 " : "", formatDate(post.date), " \xB7 ", post.author, post.pinned ? " \xB7 PINNED" : ""), /* @__PURE__ */ React.createElement("div", { className: "post-body" }, blocks), isProductPost && (post.appStore || post.googlePlay) ? /* @__PURE__ */ React.createElement("div", { className: "stores product-detail-stores" }, post.appStore ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: post.appStore }) : null, post.googlePlay ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: post.googlePlay }) : null) : null));
+  return /* @__PURE__ */ React.createElement("div", { className: "page post-page" }, /* @__PURE__ */ React.createElement("article", { className: "detail-content-panel" }, /* @__PURE__ */ React.createElement("a", { href: isProductPost ? "#products" : "#blog", className: "back-link" }, "\u2190 Back to ", isProductPost ? "products" : "blog"), post.cover ? /* @__PURE__ */ React.createElement("div", { className: "post-cover" }, /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(post.cover), alt: "", style: getCoverImageStyle(post.coverPosition, post.coverZoom, { width: "100%", height: "100%", borderRadius: "inherit" }) })) : null, /* @__PURE__ */ React.createElement("h1", { className: isProductPost ? "product-post-title" : "" }, isProductPost && post.productIcon ? /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      className: "product-post-title-icon",
+      src: resolveImageRef(post.productIcon),
+      alt: "",
+      style: {
+        width: Math.max(12, Math.min(140, parseInt(post.productIconSize, 10) || 34)),
+        height: Math.max(12, Math.min(140, parseInt(post.productIconSize, 10) || 34)),
+        marginRight: getProductIconGap(post.productIconGap),
+        transform: `translate(${getProductIconShiftX(post.productIconShiftX)}px, ${getProductIconShiftY(post.productIconShiftY)}px)`
+      }
+    }
+  ) : null, post.title), /* @__PURE__ */ React.createElement("div", { className: "meta" }, isProductPost ? "PRODUCT \xB7 " : "", formatDate(post.date), " \xB7 ", post.author, post.pinned ? " \xB7 PINNED" : ""), /* @__PURE__ */ React.createElement("div", { className: "post-body" }, blocks), isProductPost && (post.appStore || post.googlePlay) ? /* @__PURE__ */ React.createElement("div", { className: "stores product-detail-stores" }, post.appStore ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: post.appStore }) : null, post.googlePlay ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: post.googlePlay }) : null) : null));
 }
 function ProductDetailPage({ id }) {
   const store = useStore();
@@ -1374,9 +1487,21 @@ function ProductsPage() {
   const currentPage = Math.min(page, totalPages);
   const visibleProducts = products.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   return /* @__PURE__ */ React.createElement("div", { className: "page" }, /* @__PURE__ */ React.createElement("section", { className: "blog-hero" }, /* @__PURE__ */ React.createElement("h1", null, "Products"), /* @__PURE__ */ React.createElement("p", null, "Five small apps under one warm roof. Each does one thing, slowly, and well.")), /* @__PURE__ */ React.createElement("div", { className: "blog-toolbar" }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Vollkorn SC', serif", letterSpacing: "0.08em", fontSize: 13, color: "var(--ink-2)" } }, products.length, " ", products.length === 1 ? "PRODUCT" : "PRODUCTS"), /* @__PURE__ */ React.createElement(PaginationControls, { currentPage, totalPages, onPageChange: setPage, label: "Products pagination top" }), totalPages > 1 && /* @__PURE__ */ React.createElement("span", { className: "blog-page-count" }, "Page ", currentPage, " of ", totalPages)), /* @__PURE__ */ React.createElement("div", { className: "products-grid" }, visibleProducts.map((p) => {
-    const previewSrc = p.homeImage || p.cover;
-    const usingCover = !p.homeImage && !!p.cover;
-    return /* @__PURE__ */ React.createElement("a", { key: p.id, className: "product-card product-post-card", href: "#post/" + p.id }, /* @__PURE__ */ React.createElement("div", { className: "post-cover product-post-cover" }, previewSrc ? /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(previewSrc), alt: "", style: usingCover ? getCoverImageStyle(p.coverPosition, p.coverZoom) : { width: "100%", height: "100%", objectFit: "cover" } }) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", height: "100%", display: "grid", placeItems: "center", fontFamily: "'Vollkorn SC', serif", fontSize: 48, color: "rgba(0,0,0,0.2)" } }, p.title[0])), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Vollkorn SC', serif", fontSize: 12, letterSpacing: "0.16em", color: "var(--honey-deep)", margin: "0 0 4px" } }, "PRODUCT"), /* @__PURE__ */ React.createElement("h3", null, p.title), /* @__PURE__ */ React.createElement("p", null, p.excerpt), p.appStore || p.googlePlay ? /* @__PURE__ */ React.createElement("div", { className: "stores" }, p.appStore ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: p.appStore }) : null, p.googlePlay ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: p.googlePlay }) : null) : null, /* @__PURE__ */ React.createElement("span", { className: "read-more" }, "Read about product \u2192"));
+    const previewSrc = p.cover;
+    return /* @__PURE__ */ React.createElement("a", { key: p.id, className: "product-card product-post-card", href: "#post/" + p.id }, /* @__PURE__ */ React.createElement("div", { className: "post-cover product-post-cover" }, previewSrc ? /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(previewSrc), alt: "", style: getCoverImageStyle(p.coverPosition, p.coverZoom) }) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", height: "100%", display: "grid", placeItems: "center", fontFamily: "'Vollkorn SC', serif", fontSize: 48, color: "rgba(0,0,0,0.2)" } }, p.title[0])), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Vollkorn SC', serif", fontSize: 12, letterSpacing: "0.16em", color: "var(--honey-deep)", margin: "0 0 4px" } }, "PRODUCT"), /* @__PURE__ */ React.createElement("h3", { className: "list-card-title" }, p.productIcon ? /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        className: "list-card-title-icon",
+        src: resolveImageRef(p.productIcon),
+        alt: "",
+        style: {
+          width: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 26)),
+          height: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 26)),
+          marginRight: getProductIconGap(p.productIconGap),
+          transform: `translate(${getProductIconShiftX(p.productIconShiftX)}px, ${getProductIconShiftY(p.productIconShiftY)}px)`
+        }
+      }
+    ) : null, p.title), /* @__PURE__ */ React.createElement("p", null, p.excerpt), p.appStore || p.googlePlay ? /* @__PURE__ */ React.createElement("div", { className: "stores" }, p.appStore ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: p.appStore }) : null, p.googlePlay ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: p.googlePlay }) : null) : null, /* @__PURE__ */ React.createElement("span", { className: "read-more" }, "Read about product \u2192"));
   })), /* @__PURE__ */ React.createElement(PaginationControls, { currentPage, totalPages, onPageChange: setPage, label: "Products pagination bottom" }));
 }
 function ContactsPage() {
@@ -1425,12 +1550,12 @@ function AdminPage() {
   const store = useStore();
   const posts = window.cheerStore.getPosts();
   const [editingId, setEditingId] = useState(null);
-  const [form, setForm] = useState({ title: "", excerpt: "", cover: "", coverPosition: "50% 0%", coverZoom: 100, homeImage: "", productIcon: "", productIconSize: 34, appStore: "", googlePlay: "", includeInCarousel: false, author: "The Cheervinsky Studio", body: "", pinned: false, published: true, status: "blog", date: (/* @__PURE__ */ new Date()).toISOString().slice(0, 10) });
+  const [form, setForm] = useState({ title: "", excerpt: "", cover: "", coverPosition: "50% 0%", coverZoom: 100, homeImage: "", homeImagePosition: "50% 50%", homeImageZoom: 100, productIcon: "", productIconSize: 34, productIconGap: 8, productIconShiftX: 0, productIconShiftY: 0, appStore: "", googlePlay: "", includeInCarousel: false, author: "The Cheervinsky Studio", body: "", pinned: false, published: true, status: "blog", date: (/* @__PURE__ */ new Date()).toISOString().slice(0, 10) });
   const [showPreview, setShowPreview] = useState(false);
   const [postFilter, setPostFilter] = useState("all");
   const [postSearch, setPostSearch] = useState("");
   const [toast, setToast] = useState("");
-  const [mediaComposer, setMediaComposer] = useState({ url: "", uploadedSrc: "", uploadedName: "", uploadedSources: [], uploadedNames: [], caption: "", sideText: "", size: "full", align: "center", wrap: false, columns: 2 });
+  const [mediaComposer, setMediaComposer] = useState({ url: "", uploadedSrc: "", uploadedName: "", uploadedSources: [], uploadedNames: [], caption: "", sideText: "", size: "full", align: "center", wrap: false, shadow: false, columns: 2 });
   const fileRef = useRef(null);
   const bodyRef = useRef(null);
   const toastTimerRef = useRef(null);
@@ -1441,7 +1566,12 @@ function AdminPage() {
   });
   const coverCrop = getCoverCrop(form.coverPosition);
   const coverZoom = getCoverZoom(form.coverZoom);
-  const productIconSize = Math.max(18, Math.min(60, parseInt(form.productIconSize, 10) || 34));
+  const homeImageCrop = getHomeImageCrop(form.homeImagePosition);
+  const homeImageZoom = getHomeImageZoom(form.homeImageZoom);
+  const productIconSize = Math.max(12, Math.min(140, parseInt(form.productIconSize, 10) || 34));
+  const productIconGap = getProductIconGap(form.productIconGap);
+  const productIconShiftX = getProductIconShiftX(form.productIconShiftX);
+  const productIconShiftY = getProductIconShiftY(form.productIconShiftY);
   function showAdminToast(message) {
     setToast(message);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
@@ -1505,12 +1635,12 @@ function AdminPage() {
   const syncOn = localServerOn || !!(window.cheerSync && window.cheerSync.hasToken && window.cheerSync.hasToken());
   function reset() {
     setEditingId(null);
-    setForm({ title: "", excerpt: "", cover: "", coverPosition: "50% 0%", coverZoom: 100, homeImage: "", productIcon: "", productIconSize: 34, appStore: "", googlePlay: "", includeInCarousel: false, author: "The Cheervinsky Studio", body: "", pinned: false, published: true, status: "blog", date: (/* @__PURE__ */ new Date()).toISOString().slice(0, 10) });
+    setForm({ title: "", excerpt: "", cover: "", coverPosition: "50% 0%", coverZoom: 100, homeImage: "", homeImagePosition: "50% 50%", homeImageZoom: 100, productIcon: "", productIconSize: 34, productIconGap: 8, productIconShiftX: 0, productIconShiftY: 0, appStore: "", googlePlay: "", includeInCarousel: false, author: "The Cheervinsky Studio", body: "", pinned: false, published: true, status: "blog", date: (/* @__PURE__ */ new Date()).toISOString().slice(0, 10) });
     setShowPreview(false);
   }
   function startEdit(p) {
     setEditingId(p.id);
-    setForm({ title: p.title, excerpt: p.excerpt, cover: p.cover, coverPosition: getCoverPosition(p.coverPosition), coverZoom: getCoverZoom(p.coverZoom), homeImage: p.homeImage || "", productIcon: p.productIcon || "", productIconSize: p.productIconSize || 34, appStore: p.appStore || "", googlePlay: p.googlePlay || "", includeInCarousel: !!p.includeInCarousel, author: p.author, body: p.body, pinned: !!p.pinned, published: p.published !== false, status: p.status === "product" ? "product" : "blog", date: p.date });
+    setForm({ title: p.title, excerpt: p.excerpt, cover: p.cover, coverPosition: getCoverPosition(p.coverPosition), coverZoom: getCoverZoom(p.coverZoom), homeImage: p.homeImage || "", homeImagePosition: getHomeImagePosition(p.homeImagePosition), homeImageZoom: getHomeImageZoom(p.homeImageZoom), productIcon: p.productIcon || "", productIconSize: p.productIconSize || 34, productIconGap: p.productIconGap || 8, productIconShiftX: p.productIconShiftX || 0, productIconShiftY: p.productIconShiftY || 0, appStore: p.appStore || "", googlePlay: p.googlePlay || "", includeInCarousel: !!p.includeInCarousel, author: p.author, body: p.body, pinned: !!p.pinned, published: p.published !== false, status: p.status === "product" ? "product" : "blog", date: p.date });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   function savePost(publishedOverride = form.published) {
@@ -1534,8 +1664,20 @@ function AdminPage() {
   async function onFile(e) {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
+    warnIfJpegUpload(f, "List + detail page image");
     try {
-      const resized = await resizeImageFile(f, { maxWidth: 1600, maxHeight: 1e3, quality: 0.82 });
+      if (f.type === "image/png") {
+        const pngReader = new FileReader();
+        pngReader.onload = () => setForm((s) => ({ ...s, cover: pngReader.result }));
+        pngReader.readAsDataURL(f);
+        return;
+      }
+      const resized = await resizeImageFile(f, {
+        maxWidth: 1600,
+        maxHeight: 1e3,
+        quality: 0.82,
+        mimeType: f.type === "image/png" ? "image/png" : "image/jpeg"
+      });
       const reader = new FileReader();
       reader.onload = () => setForm((s) => ({ ...s, cover: reader.result }));
       reader.readAsDataURL(resized);
@@ -1546,18 +1688,17 @@ function AdminPage() {
   async function onHomeImageFile(e) {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
+    warnIfJpegUpload(f, "Home page preview image");
     try {
-      const resized = await resizeImageFile(f, {
-        maxWidth: 1200,
-        maxHeight: 1800,
-        quality: 0.84,
-        mimeType: f.type === "image/png" ? "image/png" : "image/jpeg"
-      });
-      const mediaId = await window.cheerMedia.saveFile(resized);
+      const mediaId = await window.cheerMedia.saveFile(f);
       const nextHomeImage = "media:" + mediaId;
       setForm((s) => ({ ...s, homeImage: nextHomeImage }));
       if (editingId) {
-        const saved = window.cheerStore.updatePost(editingId, { homeImage: nextHomeImage });
+        const saved = window.cheerStore.updatePost(editingId, {
+          homeImage: nextHomeImage,
+          homeImagePosition: form.homeImagePosition,
+          homeImageZoom: form.homeImageZoom
+        });
         if (saved) showAdminToast("Home page preview image updated.");
       }
     } catch (error) {
@@ -1624,13 +1765,15 @@ function AdminPage() {
     const normalizedOptions = {
       size: options.size || "full",
       align: options.align || "center",
-      wrap: options.wrap || false
+      wrap: options.wrap || false,
+      shadow: !!options.shadow
     };
     const optionParts = [
       caption,
       "size=" + normalizedOptions.size,
       "align=" + normalizedOptions.align,
-      "wrap=" + normalizedOptions.wrap
+      "wrap=" + normalizedOptions.wrap,
+      "shadow=" + normalizedOptions.shadow
     ].filter(Boolean);
     if (options.sideText) optionParts.push("sideText=" + encodeURIComponent(options.sideText));
     if (normalizedType === "gallery") optionParts.push("columns=" + Math.min(5, Math.max(2, parseInt(options.columns, 10) || 2)));
@@ -1663,9 +1806,9 @@ function AdminPage() {
     }
     const lowerUrl = Array.isArray(source) ? "" : source.toLowerCase();
     const type = hasGallery ? "gallery" : isYouTubeUrl(source) ? "youtube" : /\.(mp4|webm|ogg)(\?|#|$)/i.test(lowerUrl) ? "video" : "image";
-    const options = type === "image" ? { size: mediaComposer.size, align: mediaComposer.align, wrap: mediaComposer.wrap, sideText: mediaComposer.sideText } : type === "gallery" ? { columns: mediaComposer.columns, caption: mediaComposer.caption } : { size: "full", align: "center", wrap: false };
+    const options = type === "image" ? { size: mediaComposer.size, align: mediaComposer.align, wrap: mediaComposer.wrap, sideText: mediaComposer.sideText, shadow: mediaComposer.shadow } : type === "gallery" ? { columns: mediaComposer.columns, caption: mediaComposer.caption, shadow: mediaComposer.shadow } : { size: "full", align: "center", wrap: false };
     insertMediaBlock(type, source, mediaComposer.caption.trim(), options);
-    setMediaComposer((s) => ({ ...s, url: "", uploadedSrc: "", uploadedName: "", uploadedSources: [], uploadedNames: [], caption: "", sideText: "" }));
+    setMediaComposer((s) => ({ ...s, url: "", uploadedSrc: "", uploadedName: "", uploadedSources: [], uploadedNames: [], caption: "", sideText: "", shadow: false }));
   }
   function updateBodySelection(transform) {
     const textarea = bodyRef.current;
@@ -1824,7 +1967,7 @@ function AdminPage() {
     };
     reader.readAsText(file);
   }
-  return /* @__PURE__ */ React.createElement("div", { className: "page admin-page" }, toast ? /* @__PURE__ */ React.createElement("div", { className: "admin-toast", role: "status", "aria-live": "polite" }, toast) : null, /* @__PURE__ */ React.createElement("h1", null, "Manage posts"), /* @__PURE__ */ React.createElement("p", { className: "lede" }, "Add new blog entries, edit existing ones, and choose which post appears on the homepage.", " ", localServerOn ? "Local dev server detected \u2014 Save writes data/posts.json (and any uploaded images) directly to disk. Then `git push` to publish." : syncOn ? "Changes are saved to your GitHub repo so they show up in any browser, including incognito." : "Saving to GitHub is OFF \u2014 open this page from the dev server (localhost) or with an admin token in the URL. Changes will only stay in this browser otherwise."), /* @__PURE__ */ React.createElement("div", { className: "admin-sync-bar", style: { display: "flex", gap: 8, alignItems: "center", marginBottom: 16, flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 12, padding: "4px 10px", borderRadius: 999, background: syncOn ? "rgba(40,140,80,0.15)" : "rgba(180,40,40,0.12)", color: syncOn ? "rgb(20,90,50)" : "rgb(140,20,20)", fontWeight: 600 } }, localServerOn ? "Sync: writes to disk" : syncOn ? "GitHub sync: ON" : "Sync: OFF (read-only)"), syncOn ? /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: copyAdminLink }, "Copy secret admin link") : null, /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: manualResync }, "Reload from GitHub"), /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn dark", onClick: downloadPostsJson, title: "Download posts.json \u2014 then move it into data/ and git push to publish." }, "Publish to production\u2026")), /* @__PURE__ */ React.createElement("div", { className: "admin-grid" }, /* @__PURE__ */ React.createElement("form", { className: "admin-form", onSubmit: submit }, /* @__PURE__ */ React.createElement("h2", null, editingId ? "Edit post" : "New post"), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "TITLE"), /* @__PURE__ */ React.createElement("input", { value: form.title, onChange: (e) => setForm((s) => ({ ...s, title: e.target.value })), placeholder: "A short, gentle title", required: true })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "EXCERPT (1\u20132 sentences)"), /* @__PURE__ */ React.createElement("textarea", { value: form.excerpt, onChange: (e) => setForm((s) => ({ ...s, excerpt: e.target.value })), placeholder: "A short summary that appears on the home page and the blog list.", style: { minHeight: 70 }, required: true })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "COVER IMAGE"), /* @__PURE__ */ React.createElement("input", { ref: fileRef, type: "file", accept: "image/*", onChange: onFile, style: { padding: 8 } }), form.cover && /* @__PURE__ */ React.createElement("div", { className: "preview-thumb" }, /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(form.cover), alt: "", style: getCoverImageStyle(form.coverPosition, form.coverZoom) })), form.cover && /* @__PURE__ */ React.createElement("div", { className: "cover-position-control" }, /* @__PURE__ */ React.createElement("span", null, "Adjust visible cover area"), /* @__PURE__ */ React.createElement("label", null, "Make image bigger / smaller", /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { className: "page admin-page" }, toast ? /* @__PURE__ */ React.createElement("div", { className: "admin-toast", role: "status", "aria-live": "polite" }, toast) : null, /* @__PURE__ */ React.createElement("h1", null, "Manage posts"), /* @__PURE__ */ React.createElement("p", { className: "lede" }, "Add new blog entries, edit existing ones, and choose which post appears on the homepage.", " ", localServerOn ? "Local dev server detected \u2014 Save writes data/posts.json (and any uploaded images) directly to disk. Then `git push` to publish." : syncOn ? "Changes are saved to your GitHub repo so they show up in any browser, including incognito." : "Saving to GitHub is OFF \u2014 open this page from the dev server (localhost) or with an admin token in the URL. Changes will only stay in this browser otherwise."), /* @__PURE__ */ React.createElement("div", { className: "admin-sync-bar", style: { display: "flex", gap: 8, alignItems: "center", marginBottom: 16, flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 12, padding: "4px 10px", borderRadius: 999, background: syncOn ? "rgba(40,140,80,0.15)" : "rgba(180,40,40,0.12)", color: syncOn ? "rgb(20,90,50)" : "rgb(140,20,20)", fontWeight: 600 } }, localServerOn ? "Sync: writes to disk" : syncOn ? "GitHub sync: ON" : "Sync: OFF (read-only)"), syncOn ? /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: copyAdminLink }, "Copy secret admin link") : null, /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: manualResync }, "Reload from GitHub"), /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn dark", onClick: downloadPostsJson, title: "Download posts.json \u2014 then move it into data/ and git push to publish." }, "Publish to production\u2026")), /* @__PURE__ */ React.createElement("div", { className: "admin-grid" }, /* @__PURE__ */ React.createElement("form", { className: "admin-form", onSubmit: submit }, /* @__PURE__ */ React.createElement("h2", null, editingId ? "Edit post" : "New post"), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "TITLE"), /* @__PURE__ */ React.createElement("input", { value: form.title, onChange: (e) => setForm((s) => ({ ...s, title: e.target.value })), placeholder: "A short, gentle title", required: true })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "EXCERPT (1\u20132 sentences)"), /* @__PURE__ */ React.createElement("textarea", { value: form.excerpt, onChange: (e) => setForm((s) => ({ ...s, excerpt: e.target.value })), placeholder: "A short summary that appears on the home page and the blog list.", style: { minHeight: 70 }, required: true })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "LIST + DETAIL PAGE IMAGE"), /* @__PURE__ */ React.createElement("input", { ref: fileRef, type: "file", accept: "image/*", onChange: onFile, style: { padding: 8 } }), /* @__PURE__ */ React.createElement("p", { className: "field-hint" }, "This image appears on the Blog/Product list card and at the top of the full Blog/Product detail page. It is separate from the Home page image."), form.cover && /* @__PURE__ */ React.createElement("div", { className: "preview-thumb" }, /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(form.cover), alt: "", style: getCoverImageStyle(form.coverPosition, form.coverZoom) })), form.cover && /* @__PURE__ */ React.createElement("div", { className: "cover-position-control" }, /* @__PURE__ */ React.createElement("span", null, "Adjust visible cover area"), /* @__PURE__ */ React.createElement("label", null, "Make image bigger / smaller", /* @__PURE__ */ React.createElement(
     "input",
     {
       type: "range",
@@ -1851,23 +1994,101 @@ function AdminPage() {
       value: coverCrop.y,
       onChange: (e) => setForm((s) => ({ ...s, coverPosition: setCoverCropAxis(s.coverPosition, "y", e.target.value) }))
     }
-  )))), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "AUTHOR"), /* @__PURE__ */ React.createElement("input", { value: form.author, onChange: (e) => setForm((s) => ({ ...s, author: e.target.value })) })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "HOME PAGE PREVIEW IMAGE"), /* @__PURE__ */ React.createElement("input", { type: "file", accept: "image/*", onChange: onHomeImageFile, style: { padding: 8 } }), /* @__PURE__ */ React.createElement("p", { className: "field-hint" }, "Optional. This image appears on the homepage carousel/pinned blog phone preview. Existing posts update immediately; new posts use it after publishing."), form.homeImage ? /* @__PURE__ */ React.createElement("div", { className: "home-image-admin-row" }, form.homeImage.startsWith("media:") ? /* @__PURE__ */ React.createElement(MediaAsset, { id: form.homeImage.slice(6), alt: "" }) : /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(form.homeImage), alt: "" }), /* @__PURE__ */ React.createElement("span", null, "Homepage preview image selected."), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: removeHomeImage }, "Remove")) : null), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "DATE"), /* @__PURE__ */ React.createElement("input", { type: "date", value: form.date, onChange: (e) => setForm((s) => ({ ...s, date: e.target.value })) })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "STATUS"), /* @__PURE__ */ React.createElement("select", { value: form.status, onChange: (e) => setForm((s) => ({ ...s, status: e.target.value, pinned: e.target.value === "product" ? false : s.pinned })) }, /* @__PURE__ */ React.createElement("option", { value: "blog" }, "BLOG"), /* @__PURE__ */ React.createElement("option", { value: "product" }, "PRODUCT"))), form.status === "product" && /* @__PURE__ */ React.createElement("div", { className: "product-admin-fields" }, /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "APP STORE LINK"), /* @__PURE__ */ React.createElement("input", { value: form.appStore, onChange: (e) => setForm((s) => ({ ...s, appStore: e.target.value })), placeholder: "https://apps.apple.com/..." })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "GOOGLE PLAY LINK"), /* @__PURE__ */ React.createElement("input", { value: form.googlePlay, onChange: (e) => setForm((s) => ({ ...s, googlePlay: e.target.value })), placeholder: "https://play.google.com/store/apps/details?id=..." })), /* @__PURE__ */ React.createElement("div", { className: "checkbox-row" }, /* @__PURE__ */ React.createElement("input", { id: "includeInCarousel", type: "checkbox", checked: form.includeInCarousel, onChange: (e) => setForm((s) => ({ ...s, includeInCarousel: e.target.checked })) }), /* @__PURE__ */ React.createElement("label", { htmlFor: "includeInCarousel" }, "Show this product in the homepage carousel")), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "TINY PRODUCT TITLE ICON"), /* @__PURE__ */ React.createElement("input", { type: "file", accept: "image/*", onChange: onProductIconFile, style: { padding: 8 } }), /* @__PURE__ */ React.createElement("div", { className: "product-icon-admin-row" }, form.productIcon ? /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(form.productIcon), alt: "" }) : null, /* @__PURE__ */ React.createElement("span", null, "This appears before the product title on the home carousel. Use a small transparent PNG/SVG-style image under 160KB."), form.productIcon ? /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => setForm((s) => ({ ...s, productIcon: "" })) }, "Remove") : null), /* @__PURE__ */ React.createElement("div", { className: "product-icon-size-control" }, /* @__PURE__ */ React.createElement("label", null, "Icon size (", productIconSize, "px)", /* @__PURE__ */ React.createElement(
+  )))), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "AUTHOR"), /* @__PURE__ */ React.createElement("input", { value: form.author, onChange: (e) => setForm((s) => ({ ...s, author: e.target.value })) })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "MAIN / HOME PAGE PREVIEW IMAGE"), /* @__PURE__ */ React.createElement("input", { type: "file", accept: "image/*", onChange: onHomeImageFile, style: { padding: 8 } }), /* @__PURE__ */ React.createElement("p", { className: "field-hint" }, "Optional. This image appears only on the Home page carousel or pinned blog block. It does not replace the Blog/Product list image or detail page image."), form.homeImage ? /* @__PURE__ */ React.createElement("div", { className: "home-image-admin-row" }, form.homeImage.startsWith("media:") ? /* @__PURE__ */ React.createElement(MediaAsset, { id: form.homeImage.slice(6), alt: "" }) : /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(form.homeImage), alt: "" }), /* @__PURE__ */ React.createElement("span", null, "Homepage preview image selected."), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: removeHomeImage }, "Remove")) : null, form.homeImage ? /* @__PURE__ */ React.createElement("div", { className: "home-image-placement" }, /* @__PURE__ */ React.createElement("div", { className: "home-image-combined-preview" }, /* @__PURE__ */ React.createElement("div", { className: "home-image-phone-preview" }, /* @__PURE__ */ React.createElement(
+    PhoneMockup,
+    {
+      src: form.homeImage,
+      alt: "",
+      className: "home-image-preview-phone",
+      innerStyle: getHomeImageStyle(form.homeImagePosition, form.homeImageZoom)
+    }
+  )), /* @__PURE__ */ React.createElement("div", { className: "home-image-text-preview" }, /* @__PURE__ */ React.createElement("p", null, form.status === "product" ? "PRODUCT" : "FROM THE BLOG"), /* @__PURE__ */ React.createElement("h4", null, form.status === "product" && form.productIcon ? /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      src: resolveImageRef(form.productIcon),
+      alt: "",
+      style: {
+        width: Math.max(12, Math.min(90, parseInt(form.productIconSize, 10) || 22)),
+        height: Math.max(12, Math.min(90, parseInt(form.productIconSize, 10) || 22)),
+        transform: `translate(${productIconShiftX}px, ${productIconShiftY}px)`
+      }
+    }
+  ) : null, /* @__PURE__ */ React.createElement("span", null, form.title || "Post title preview")), /* @__PURE__ */ React.createElement("span", null, form.excerpt || "Short description preview will appear here so you can check how image and text look together."))), /* @__PURE__ */ React.createElement("div", { className: "home-image-controls" }, /* @__PURE__ */ React.createElement("span", null, "Adjust Home page image inside the phone preview"), /* @__PURE__ */ React.createElement("label", null, "Make image bigger / smaller", /* @__PURE__ */ React.createElement(
     "input",
     {
       type: "range",
-      min: "18",
-      max: "60",
+      min: "30",
+      max: "700",
+      value: homeImageZoom,
+      onChange: (e) => setForm((s) => ({ ...s, homeImageZoom: e.target.value }))
+    }
+  )), /* @__PURE__ */ React.createElement("label", null, "Move left / right", /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "range",
+      min: "-80",
+      max: "180",
+      value: homeImageCrop.x,
+      onChange: (e) => setForm((s) => ({ ...s, homeImagePosition: setHomeImageCropAxis(s.homeImagePosition, "x", e.target.value) }))
+    }
+  )), /* @__PURE__ */ React.createElement("label", null, "Move up / down", /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "range",
+      min: "-80",
+      max: "180",
+      value: homeImageCrop.y,
+      onChange: (e) => setForm((s) => ({ ...s, homeImagePosition: setHomeImageCropAxis(s.homeImagePosition, "y", e.target.value) }))
+    }
+  )))) : null), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "DATE"), /* @__PURE__ */ React.createElement("input", { type: "date", value: form.date, onChange: (e) => setForm((s) => ({ ...s, date: e.target.value })) })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "STATUS"), /* @__PURE__ */ React.createElement("select", { value: form.status, onChange: (e) => setForm((s) => ({ ...s, status: e.target.value, pinned: e.target.value === "product" ? false : s.pinned })) }, /* @__PURE__ */ React.createElement("option", { value: "blog" }, "BLOG"), /* @__PURE__ */ React.createElement("option", { value: "product" }, "PRODUCT"))), form.status === "product" && /* @__PURE__ */ React.createElement("div", { className: "product-admin-fields" }, /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "APP STORE LINK"), /* @__PURE__ */ React.createElement("input", { value: form.appStore, onChange: (e) => setForm((s) => ({ ...s, appStore: e.target.value })), placeholder: "https://apps.apple.com/..." })), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "GOOGLE PLAY LINK"), /* @__PURE__ */ React.createElement("input", { value: form.googlePlay, onChange: (e) => setForm((s) => ({ ...s, googlePlay: e.target.value })), placeholder: "https://play.google.com/store/apps/details?id=..." })), /* @__PURE__ */ React.createElement("div", { className: "checkbox-row" }, /* @__PURE__ */ React.createElement("input", { id: "includeInCarousel", type: "checkbox", checked: form.includeInCarousel, onChange: (e) => setForm((s) => ({ ...s, includeInCarousel: e.target.checked })) }), /* @__PURE__ */ React.createElement("label", { htmlFor: "includeInCarousel" }, "Show this product in the homepage carousel")), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "TINY PRODUCT TITLE ICON"), /* @__PURE__ */ React.createElement("input", { type: "file", accept: "image/*", onChange: onProductIconFile, style: { padding: 8 } }), /* @__PURE__ */ React.createElement("div", { className: "product-icon-admin-row" }, form.productIcon ? /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(form.productIcon), alt: "" }) : null, /* @__PURE__ */ React.createElement("span", null, "This appears before the product title on the home carousel. Use a small transparent PNG/SVG-style image under 160KB."), form.productIcon ? /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => setForm((s) => ({ ...s, productIcon: "" })) }, "Remove") : null), /* @__PURE__ */ React.createElement("div", { className: "product-icon-size-control" }, /* @__PURE__ */ React.createElement("label", null, "Icon size (", productIconSize, "px)", /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "range",
+      min: "12",
+      max: "140",
       value: productIconSize,
       onChange: (e) => setForm((s) => ({ ...s, productIconSize: e.target.value }))
+    }
+  ))), /* @__PURE__ */ React.createElement("div", { className: "product-icon-size-control" }, /* @__PURE__ */ React.createElement("label", null, "Distance from title (", productIconGap, "px)", /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "range",
+      min: "-80",
+      max: "80",
+      value: productIconGap,
+      onChange: (e) => setForm((s) => ({ ...s, productIconGap: e.target.value }))
+    }
+  ))), /* @__PURE__ */ React.createElement("div", { className: "product-icon-size-control" }, /* @__PURE__ */ React.createElement("label", null, "Horizontal move (", productIconShiftX, "px)", /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "range",
+      min: "-120",
+      max: "120",
+      value: productIconShiftX,
+      onChange: (e) => setForm((s) => ({ ...s, productIconShiftX: e.target.value }))
+    }
+  ))), /* @__PURE__ */ React.createElement("div", { className: "product-icon-size-control" }, /* @__PURE__ */ React.createElement("label", null, "Vertical move (", productIconShiftY, "px)", /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "range",
+      min: "-90",
+      max: "90",
+      value: productIconShiftY,
+      onChange: (e) => setForm((s) => ({ ...s, productIconShiftY: e.target.value }))
     }
   ))), /* @__PURE__ */ React.createElement("div", { className: "product-icon-title-preview", "aria-live": "polite" }, form.productIcon ? /* @__PURE__ */ React.createElement(
     "img",
     {
       src: resolveImageRef(form.productIcon),
       alt: "",
-      style: { width: productIconSize, height: productIconSize }
+      style: {
+        width: productIconSize,
+        height: productIconSize,
+        marginRight: productIconGap,
+        transform: `translate(${productIconShiftX}px, ${productIconShiftY}px)`
+      }
     }
-  ) : /* @__PURE__ */ React.createElement("span", { className: "ink-mark", style: { color: "var(--honey-deep)", fontStyle: "italic" } }, (form.title || "P")[0]), /* @__PURE__ */ React.createElement("span", null, form.title || "Product title preview")))), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "BODY (use blank lines between paragraphs, ## for headings)"), /* @__PURE__ */ React.createElement("div", { className: "body-format-toolbar", "aria-label": "Post formatting toolbar" }, /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("**", "**", "bold text") }, "Bold"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("*", "*", "italic text") }, "Italic"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("__", "__", "underlined text") }, "Underline"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: addLinkToBody }, "Link")), /* @__PURE__ */ React.createElement("textarea", { className: "post-body-editor", ref: bodyRef, value: form.body, onChange: (e) => setForm((s) => ({ ...s, body: e.target.value })), placeholder: "## A small heading\n\nA paragraph of plain, warm prose.\n\n{{image:https://example.com/photo.gif|Optional caption|size=medium|align=left|wrap=true}}\n\nMore text after the media." }), /* @__PURE__ */ React.createElement("div", { className: "media-composer" }, /* @__PURE__ */ React.createElement("div", { className: "media-composer-head" }, /* @__PURE__ */ React.createElement("strong", null, "Add media block"), /* @__PURE__ */ React.createElement("span", null, "Inserted wherever your cursor is in the body.")), /* @__PURE__ */ React.createElement("div", { className: "media-composer-grid" }, /* @__PURE__ */ React.createElement("label", null, "Media URL", /* @__PURE__ */ React.createElement("input", { value: mediaComposer.url, onChange: (e) => setMediaComposer((s) => ({ ...s, url: e.target.value })), placeholder: "YouTube, image/GIF, or direct video URL" })), /* @__PURE__ */ React.createElement("label", null, "Caption", /* @__PURE__ */ React.createElement("input", { value: mediaComposer.caption, onChange: (e) => setMediaComposer((s) => ({ ...s, caption: e.target.value })), placeholder: "Optional caption" })), /* @__PURE__ */ React.createElement("label", { className: "media-composer-wide" }, "Text beside image", /* @__PURE__ */ React.createElement(
+  ) : null, /* @__PURE__ */ React.createElement("span", null, form.title || "Product title preview")))), /* @__PURE__ */ React.createElement("div", { className: "field" }, /* @__PURE__ */ React.createElement("label", null, "BODY (use blank lines between paragraphs, # / ## / ### for headings)"), /* @__PURE__ */ React.createElement("div", { className: "body-format-toolbar", "aria-label": "Post formatting toolbar" }, /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("# ", "", "Main heading") }, "H1"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("## ", "", "Section heading") }, "H2"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("### ", "", "Small heading") }, "H3"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("**", "**", "bold text") }, "Bold"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("*", "*", "italic text") }, "Italic"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => wrapBodySelection("__", "__", "underlined text") }, "Underline"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: addLinkToBody }, "Link")), /* @__PURE__ */ React.createElement("textarea", { className: "post-body-editor", ref: bodyRef, value: form.body, onChange: (e) => setForm((s) => ({ ...s, body: e.target.value })), placeholder: "# Main heading\n\n## Section heading\n\n### Small heading\n\nA paragraph of plain, warm prose.\n\n{{image:https://example.com/photo.gif|Optional caption|size=medium|align=left|wrap=true}}\n\nMore text after the media." }), /* @__PURE__ */ React.createElement("div", { className: "media-composer" }, /* @__PURE__ */ React.createElement("div", { className: "media-composer-head" }, /* @__PURE__ */ React.createElement("strong", null, "Add media block"), /* @__PURE__ */ React.createElement("span", null, "Inserted wherever your cursor is in the body.")), /* @__PURE__ */ React.createElement("div", { className: "media-composer-grid" }, /* @__PURE__ */ React.createElement("label", null, "Media URL", /* @__PURE__ */ React.createElement("input", { value: mediaComposer.url, onChange: (e) => setMediaComposer((s) => ({ ...s, url: e.target.value })), placeholder: "YouTube, image/GIF, or direct video URL" })), /* @__PURE__ */ React.createElement("label", null, "Caption", /* @__PURE__ */ React.createElement("input", { value: mediaComposer.caption, onChange: (e) => setMediaComposer((s) => ({ ...s, caption: e.target.value })), placeholder: "Optional caption" })), /* @__PURE__ */ React.createElement("label", { className: "media-composer-wide" }, "Text beside image", /* @__PURE__ */ React.createElement(
     "textarea",
     {
       value: mediaComposer.sideText,
@@ -1883,7 +2104,14 @@ function AdminPage() {
       disabled: mediaComposer.align === "center" || mediaComposer.uploadedSources.length > 1,
       onChange: (e) => setMediaComposer((s) => ({ ...s, wrap: e.target.checked }))
     }
-  ), "Place text beside the image")), /* @__PURE__ */ React.createElement("div", { className: "media-insert-row" }, /* @__PURE__ */ React.createElement("label", { className: "btn ghost" }, "Upload image / GIF", /* @__PURE__ */ React.createElement("input", { type: "file", accept: "image/*", multiple: true, onChange: stageBodyMedia })), mediaComposer.uploadedName ? /* @__PURE__ */ React.createElement("span", { className: "media-selected" }, "Selected: ", mediaComposer.uploadedName) : null, /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn dark", onClick: addComposerMedia }, mediaComposer.uploadedSources.length > 1 ? "Add image row" : "Add image"), /* @__PURE__ */ React.createElement("span", null, "Upload 1 image/GIF, or select 2\u20135 images together to place them on one line. Videos should be added by URL.")))), /* @__PURE__ */ React.createElement("div", { className: "checkbox-row" }, /* @__PURE__ */ React.createElement("input", { id: "pin", type: "checkbox", checked: form.pinned, disabled: form.status === "product", onChange: (e) => setForm((s) => ({ ...s, pinned: e.target.checked })) }), /* @__PURE__ */ React.createElement("label", { htmlFor: "pin" }, "\u{1F4CC} Pin to homepage (replaces the current pinned post)")), /* @__PURE__ */ React.createElement("div", { className: "checkbox-row" }, /* @__PURE__ */ React.createElement("input", { id: "published", type: "checkbox", checked: form.published, onChange: (e) => setForm((s) => ({ ...s, published: e.target.checked, pinned: e.target.checked ? s.pinned : false })) }), /* @__PURE__ */ React.createElement("label", { htmlFor: "published" }, "Publish this post publicly")), /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn dark" }, editingId ? "Save changes" : "Publish post"), /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: () => savePost(false) }, "Save as draft"), /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: () => setShowPreview((v) => !v) }, showPreview ? "Hide preview" : "Preview"), editingId && /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: reset }, "Cancel"))), showPreview && /* @__PURE__ */ React.createElement("section", { className: "admin-preview" }, /* @__PURE__ */ React.createElement("div", { className: "admin-preview-bar" }, /* @__PURE__ */ React.createElement("span", null, "Preview only \u2014 not published"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => setShowPreview(false) }, "Close")), /* @__PURE__ */ React.createElement("article", { className: "post-page admin-preview-post" }, form.cover ? /* @__PURE__ */ React.createElement("div", { className: "post-cover" }, /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(form.cover), alt: "", style: getCoverImageStyle(form.coverPosition, form.coverZoom, { width: "100%", height: "100%", borderRadius: "inherit" }) })) : null, /* @__PURE__ */ React.createElement("h1", null, form.title || "Untitled draft"), /* @__PURE__ */ React.createElement("div", { className: "meta" }, form.status === "product" ? "PRODUCT \xB7 " : "", formatDate(form.date), " \xB7 ", form.author || "The Cheervinsky Studio", form.pinned && form.published && form.status !== "product" ? " \xB7 PINNED" : "", form.includeInCarousel && form.status === "product" ? " \xB7 CAROUSEL" : ""), /* @__PURE__ */ React.createElement("div", { className: "post-body" }, form.body ? renderPostBody(form.body, { onMediaChange: updateMediaBlock, onMediaDelete: deleteMediaBlock, onGalleryImageDelete: deleteGalleryImage, onGalleryImageMove: moveGalleryImage, onGalleryAdd: addImagesToGallery }) : /* @__PURE__ */ React.createElement("p", { style: { color: "var(--ink-3)" } }, "Start writing to preview the post body.")), form.status === "product" && (form.appStore || form.googlePlay) ? /* @__PURE__ */ React.createElement("div", { className: "stores product-detail-stores" }, form.appStore ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: form.appStore }) : null, form.googlePlay ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: form.googlePlay }) : null) : null)), /* @__PURE__ */ React.createElement("div", { className: "admin-list" }, /* @__PURE__ */ React.createElement("div", { className: "admin-list-header" }, /* @__PURE__ */ React.createElement("h2", null, "All posts (", filteredPosts.length, ")"), /* @__PURE__ */ React.createElement("div", { className: "admin-list-tools" }, /* @__PURE__ */ React.createElement("label", { className: "admin-search" }, /* @__PURE__ */ React.createElement("span", null, "Search title"), /* @__PURE__ */ React.createElement(
+  ), "Place text beside the image"), /* @__PURE__ */ React.createElement("label", { className: "media-composer-checkbox" }, /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "checkbox",
+      checked: mediaComposer.shadow,
+      onChange: (e) => setMediaComposer((s) => ({ ...s, shadow: e.target.checked }))
+    }
+  ), "Add drop shadow")), /* @__PURE__ */ React.createElement("div", { className: "media-insert-row" }, /* @__PURE__ */ React.createElement("label", { className: "btn ghost" }, "Upload image / GIF", /* @__PURE__ */ React.createElement("input", { type: "file", accept: "image/*", multiple: true, onChange: stageBodyMedia })), mediaComposer.uploadedName ? /* @__PURE__ */ React.createElement("span", { className: "media-selected" }, "Selected: ", mediaComposer.uploadedName) : null, /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn dark", onClick: addComposerMedia }, mediaComposer.uploadedSources.length > 1 ? "Add image row" : "Add image"), /* @__PURE__ */ React.createElement("span", null, "Upload 1 image/GIF, or select 2\u20135 images together to place them on one line. Videos should be added by URL.")))), /* @__PURE__ */ React.createElement("div", { className: "checkbox-row" }, /* @__PURE__ */ React.createElement("input", { id: "pin", type: "checkbox", checked: form.pinned, disabled: form.status === "product", onChange: (e) => setForm((s) => ({ ...s, pinned: e.target.checked })) }), /* @__PURE__ */ React.createElement("label", { htmlFor: "pin" }, "\u{1F4CC} Pin to homepage (replaces the current pinned post)")), /* @__PURE__ */ React.createElement("div", { className: "checkbox-row" }, /* @__PURE__ */ React.createElement("input", { id: "published", type: "checkbox", checked: form.published, onChange: (e) => setForm((s) => ({ ...s, published: e.target.checked, pinned: e.target.checked ? s.pinned : false })) }), /* @__PURE__ */ React.createElement("label", { htmlFor: "published" }, "Publish this post publicly")), /* @__PURE__ */ React.createElement("div", { className: "row admin-save-row" }, /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn dark" }, editingId ? "Save changes" : "Publish post"), /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: () => savePost(false) }, "Save as draft"), /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: () => setShowPreview((v) => !v) }, showPreview ? "Hide preview" : "Preview"), editingId && /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost", onClick: reset }, "Cancel"))), showPreview && /* @__PURE__ */ React.createElement("section", { className: "admin-preview" }, /* @__PURE__ */ React.createElement("div", { className: "admin-preview-bar" }, /* @__PURE__ */ React.createElement("span", null, "Preview only \u2014 not published"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => setShowPreview(false) }, "Close")), /* @__PURE__ */ React.createElement("article", { className: "post-page admin-preview-post" }, form.cover ? /* @__PURE__ */ React.createElement("div", { className: "post-cover" }, /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(form.cover), alt: "", style: getCoverImageStyle(form.coverPosition, form.coverZoom, { width: "100%", height: "100%", borderRadius: "inherit" }) })) : null, /* @__PURE__ */ React.createElement("h1", null, form.title || "Untitled draft"), /* @__PURE__ */ React.createElement("div", { className: "meta" }, form.status === "product" ? "PRODUCT \xB7 " : "", formatDate(form.date), " \xB7 ", form.author || "The Cheervinsky Studio", form.pinned && form.published && form.status !== "product" ? " \xB7 PINNED" : "", form.includeInCarousel && form.status === "product" ? " \xB7 CAROUSEL" : ""), /* @__PURE__ */ React.createElement("div", { className: "post-body" }, form.body ? renderPostBody(form.body, { onMediaChange: updateMediaBlock, onMediaDelete: deleteMediaBlock, onGalleryImageDelete: deleteGalleryImage, onGalleryImageMove: moveGalleryImage, onGalleryAdd: addImagesToGallery }) : /* @__PURE__ */ React.createElement("p", { style: { color: "var(--ink-3)" } }, "Start writing to preview the post body.")), form.status === "product" && (form.appStore || form.googlePlay) ? /* @__PURE__ */ React.createElement("div", { className: "stores product-detail-stores" }, form.appStore ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: form.appStore }) : null, form.googlePlay ? /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: form.googlePlay }) : null) : null)), /* @__PURE__ */ React.createElement("div", { className: "admin-list" }, /* @__PURE__ */ React.createElement("div", { className: "admin-list-header" }, /* @__PURE__ */ React.createElement("h2", null, "All posts (", filteredPosts.length, ")"), /* @__PURE__ */ React.createElement("div", { className: "admin-list-tools" }, /* @__PURE__ */ React.createElement("label", { className: "admin-search" }, /* @__PURE__ */ React.createElement("span", null, "Search title"), /* @__PURE__ */ React.createElement(
     "input",
     {
       type: "search",

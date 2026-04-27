@@ -47,12 +47,11 @@ function BlogPage() {
       </div>
       <div className="blog-grid">
         {visiblePosts.map(p => {
-          const previewSrc = p.homeImage || p.cover;
-          const usingCover = !p.homeImage && !!p.cover;
+          const previewSrc = p.cover;
           return (
           <a key={p.id} className="post-card" href={'#post/' + p.id}>
             <div className="post-cover">
-              {previewSrc ? <img src={resolveImageRef(previewSrc)} alt="" style={usingCover ? getCoverImageStyle(p.coverPosition, p.coverZoom) : { width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', display: 'grid', placeItems: 'center', fontFamily: "'Vollkorn SC', serif", fontSize: 48, color: 'rgba(0,0,0,0.2)' }}>{p.title[0]}</div>}
+              {previewSrc ? <img src={resolveImageRef(previewSrc)} alt="" style={getCoverImageStyle(p.coverPosition, p.coverZoom)} /> : <div style={{ width: '100%', height: '100%', display: 'grid', placeItems: 'center', fontFamily: "'Vollkorn SC', serif", fontSize: 48, color: 'rgba(0,0,0,0.2)' }}>{p.title[0]}</div>}
             </div>
             <div className="body">
               <div className="meta">
@@ -61,7 +60,22 @@ function BlogPage() {
                 <span>·</span>
                 <span>{p.author}</span>
               </div>
-              <h3>{p.title}</h3>
+              <h3 className="list-card-title">
+                {p.productIcon ? (
+                  <img
+                    className="list-card-title-icon"
+                    src={resolveImageRef(p.productIcon)}
+                    alt=""
+                    style={{
+                      width: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 26)),
+                      height: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 26)),
+                      marginRight: getProductIconGap(p.productIconGap),
+                      transform: `translate(${getProductIconShiftX(p.productIconShiftX)}px, ${getProductIconShiftY(p.productIconShiftY)}px)`,
+                    }}
+                  />
+                ) : null}
+                {p.title}
+              </h3>
               <p>{p.excerpt}</p>
               <span className="read-more">Read more →</span>
             </div>
@@ -119,6 +133,52 @@ function getCoverImageStyle(position, zoom, extra = {}) {
     transformOrigin: coverPosition,
     ...extra,
   };
+}
+
+function getHomeImagePosition(position) {
+  return /^-?\d{1,3}% -?\d{1,3}%$/.test(position || '') ? position : '50% 50%';
+}
+
+function getHomeImageCrop(position) {
+  const [x, y] = getHomeImagePosition(position).split(' ').map(value => parseInt(value, 10));
+  return { x, y };
+}
+
+function setHomeImageCropAxis(position, axis, value) {
+  const crop = getHomeImageCrop(position);
+  const nextValue = Math.min(180, Math.max(-80, parseInt(value, 10) || 0));
+  return axis === 'x' ? `${nextValue}% ${crop.y}%` : `${crop.x}% ${nextValue}%`;
+}
+
+function getHomeImageZoom(zoom) {
+  return Math.min(700, Math.max(30, parseInt(zoom, 10) || 100));
+}
+
+function getHomeImageStyle(position, zoom, extra = {}) {
+  const imagePosition = getHomeImagePosition(position);
+  return {
+    objectPosition: imagePosition,
+    transform: `scale(${getHomeImageZoom(zoom) / 100})`,
+    transformOrigin: imagePosition,
+    ...extra,
+  };
+}
+
+function getProductIconShiftX(value) {
+  return Math.max(-120, Math.min(120, parseInt(value, 10) || 0));
+}
+
+function getProductIconShiftY(value) {
+  return Math.max(-90, Math.min(90, parseInt(value, 10) || 0));
+}
+
+function getProductIconGap(value) {
+  return Math.max(-80, Math.min(80, parseInt(value, 10) || 8));
+}
+
+function warnIfJpegUpload(file, contextLabel) {
+  if (!file || file.type !== 'image/jpeg') return;
+  alert(`${contextLabel}: this file is JPEG, and JPEG cannot keep transparent background. Please use PNG with alpha for transparent areas.`);
 }
 
 function renderInlineText(text) {
@@ -205,7 +265,7 @@ function MediaAsset({ id, alt = '' }) {
 }
 
 function parseMediaOptions(parts) {
-  const options = { caption: '', sideText: '', size: 'full', align: 'center', wrap: false, columns: 2 };
+  const options = { caption: '', sideText: '', size: 'full', align: 'center', wrap: false, shadow: false, columns: 2 };
 
   parts.forEach(part => {
     const value = (part || '').trim();
@@ -223,6 +283,7 @@ function parseMediaOptions(parts) {
     if (key === 'size' && ['small', 'medium', 'large', 'full'].includes(optionValue)) options.size = optionValue;
     if (key === 'align' && ['left', 'center', 'right'].includes(optionValue)) options.align = optionValue;
     if (key === 'wrap') options.wrap = ['true', 'yes', '1'].includes(optionValue);
+    if (key === 'shadow') options.shadow = ['true', 'yes', '1'].includes(optionValue);
     if (key === 'columns') options.columns = Math.min(5, Math.max(2, parseInt(optionValue, 10) || 2));
     if (key === 'sidetext') {
       try {
@@ -244,6 +305,7 @@ function buildMediaToken(type, src, options = {}) {
     'size=' + (options.size || 'full'),
     'align=' + (options.align || 'center'),
     'wrap=' + !!options.wrap,
+    'shadow=' + !!options.shadow,
     type === 'gallery' ? 'columns=' + Math.min(5, Math.max(2, parseInt(options.columns, 10) || 2)) : '',
     options.sideText ? 'sideText=' + encodeURIComponent(options.sideText) : '',
   ].filter(Boolean);
@@ -277,10 +339,11 @@ function renderPostBody(body, editor = {}) {
         'post-media-' + options.size,
         'post-media-' + options.align,
         options.wrap ? 'post-media-wrap' : 'post-media-no-wrap',
+        options.shadow ? 'post-media-shadow' : '',
       ].join(' ');
       const canEdit = editor.onMediaChange && editor.onMediaDelete && (type === 'image' || type === 'gallery');
       const mediaFigure = (
-        <figure className={type === 'gallery' ? 'post-media post-gallery post-gallery-columns-' + options.columns : mediaClass}>
+        <figure className={type === 'gallery' ? ('post-media post-gallery post-gallery-columns-' + options.columns + (options.shadow ? ' post-media-shadow' : '')) : mediaClass}>
           {type === 'gallery' ? (
             <div className="post-gallery-grid">
               {gallerySources.map((source, galleryIndex) => {
@@ -354,6 +417,14 @@ function renderPostBody(body, editor = {}) {
                 Caption
                 <input value={options.caption} onChange={e => editor.onMediaChange(i, { caption: e.target.value })} />
               </label>
+              <label className="media-preview-checkbox">
+                <input
+                  type="checkbox"
+                  checked={!!options.shadow}
+                  onChange={e => editor.onMediaChange(i, { shadow: e.target.checked })}
+                />
+                Drop shadow
+              </label>
               {gallerySources.length < 5 ? (
                 <label className="gallery-add-btn">
                   Add images
@@ -389,6 +460,14 @@ function renderPostBody(body, editor = {}) {
                   onChange={e => editor.onMediaChange(i, { wrap: e.target.checked })}
                 />
                 Text beside
+              </label>
+              <label className="media-preview-checkbox">
+                <input
+                  type="checkbox"
+                  checked={!!options.shadow}
+                  onChange={e => editor.onMediaChange(i, { shadow: e.target.checked })}
+                />
+                Drop shadow
               </label>
               <label className="media-preview-caption">
                 Caption
@@ -433,8 +512,9 @@ function renderPostBody(body, editor = {}) {
       );
     }
 
+    if (trim.startsWith('### ')) return <h3 key={i}>{renderInlineText(trim.slice(4))}</h3>;
     if (trim.startsWith('## ')) return <h2 key={i}>{renderInlineText(trim.slice(3))}</h2>;
-    if (trim.startsWith('# ')) return <h2 key={i}>{renderInlineText(trim.slice(2))}</h2>;
+    if (trim.startsWith('# ')) return <h1 key={i}>{renderInlineText(trim.slice(2))}</h1>;
     return <p key={i}>{renderInlineText(trim)}</p>;
   });
 }
@@ -459,7 +539,22 @@ function PostPage({ id }) {
       <article className="detail-content-panel">
         <a href={isProductPost ? '#products' : '#blog'} className="back-link">← Back to {isProductPost ? 'products' : 'blog'}</a>
         {post.cover ? <div className="post-cover"><img src={resolveImageRef(post.cover)} alt="" style={getCoverImageStyle(post.coverPosition, post.coverZoom, { width: '100%', height: '100%', borderRadius: 'inherit' })} /></div> : null}
-        <h1>{post.title}</h1>
+        <h1 className={isProductPost ? 'product-post-title' : ''}>
+          {isProductPost && post.productIcon ? (
+            <img
+              className="product-post-title-icon"
+              src={resolveImageRef(post.productIcon)}
+              alt=""
+              style={{
+                width: Math.max(12, Math.min(140, parseInt(post.productIconSize, 10) || 34)),
+                height: Math.max(12, Math.min(140, parseInt(post.productIconSize, 10) || 34)),
+                marginRight: getProductIconGap(post.productIconGap),
+                transform: `translate(${getProductIconShiftX(post.productIconShiftX)}px, ${getProductIconShiftY(post.productIconShiftY)}px)`,
+              }}
+            />
+          ) : null}
+          {post.title}
+        </h1>
         <div className="meta">{isProductPost ? 'PRODUCT · ' : ''}{formatDate(post.date)} · {post.author}{post.pinned ? ' · PINNED' : ''}</div>
         <div className="post-body">{blocks}</div>
         {isProductPost && (post.appStore || post.googlePlay) ? (
@@ -532,15 +627,29 @@ function ProductsPage() {
       </div>
       <div className="products-grid">
         {visibleProducts.map(p => {
-          const previewSrc = p.homeImage || p.cover;
-          const usingCover = !p.homeImage && !!p.cover;
+          const previewSrc = p.cover;
           return (
           <a key={p.id} className="product-card product-post-card" href={'#post/' + p.id}>
             <div className="post-cover product-post-cover">
-              {previewSrc ? <img src={resolveImageRef(previewSrc)} alt="" style={usingCover ? getCoverImageStyle(p.coverPosition, p.coverZoom) : { width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', display: 'grid', placeItems: 'center', fontFamily: "'Vollkorn SC', serif", fontSize: 48, color: 'rgba(0,0,0,0.2)' }}>{p.title[0]}</div>}
+              {previewSrc ? <img src={resolveImageRef(previewSrc)} alt="" style={getCoverImageStyle(p.coverPosition, p.coverZoom)} /> : <div style={{ width: '100%', height: '100%', display: 'grid', placeItems: 'center', fontFamily: "'Vollkorn SC', serif", fontSize: 48, color: 'rgba(0,0,0,0.2)' }}>{p.title[0]}</div>}
             </div>
             <p style={{ fontFamily: "'Vollkorn SC', serif", fontSize: 12, letterSpacing: '0.16em', color: 'var(--honey-deep)', margin: '0 0 4px' }}>PRODUCT</p>
-            <h3>{p.title}</h3>
+            <h3 className="list-card-title">
+              {p.productIcon ? (
+                <img
+                  className="list-card-title-icon"
+                  src={resolveImageRef(p.productIcon)}
+                  alt=""
+                  style={{
+                    width: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 26)),
+                    height: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 26)),
+                    marginRight: getProductIconGap(p.productIconGap),
+                    transform: `translate(${getProductIconShiftX(p.productIconShiftX)}px, ${getProductIconShiftY(p.productIconShiftY)}px)`,
+                  }}
+                />
+              ) : null}
+              {p.title}
+            </h3>
             <p>{p.excerpt}</p>
             {(p.appStore || p.googlePlay) ? (
               <div className="stores">
@@ -638,12 +747,12 @@ function AdminPage() {
   const store = useStore();
   const posts = window.cheerStore.getPosts();
   const [editingId, setEditingId] = useState(null);
-  const [form, setForm] = useState({ title: '', excerpt: '', cover: '', coverPosition: '50% 0%', coverZoom: 100, homeImage: '', productIcon: '', productIconSize: 34, appStore: '', googlePlay: '', includeInCarousel: false, author: 'The Cheervinsky Studio', body: '', pinned: false, published: true, status: 'blog', date: new Date().toISOString().slice(0, 10) });
+  const [form, setForm] = useState({ title: '', excerpt: '', cover: '', coverPosition: '50% 0%', coverZoom: 100, homeImage: '', homeImagePosition: '50% 50%', homeImageZoom: 100, productIcon: '', productIconSize: 34, productIconGap: 8, productIconShiftX: 0, productIconShiftY: 0, appStore: '', googlePlay: '', includeInCarousel: false, author: 'The Cheervinsky Studio', body: '', pinned: false, published: true, status: 'blog', date: new Date().toISOString().slice(0, 10) });
   const [showPreview, setShowPreview] = useState(false);
   const [postFilter, setPostFilter] = useState('all');
   const [postSearch, setPostSearch] = useState('');
   const [toast, setToast] = useState('');
-  const [mediaComposer, setMediaComposer] = useState({ url: '', uploadedSrc: '', uploadedName: '', uploadedSources: [], uploadedNames: [], caption: '', sideText: '', size: 'full', align: 'center', wrap: false, columns: 2 });
+  const [mediaComposer, setMediaComposer] = useState({ url: '', uploadedSrc: '', uploadedName: '', uploadedSources: [], uploadedNames: [], caption: '', sideText: '', size: 'full', align: 'center', wrap: false, shadow: false, columns: 2 });
   const fileRef = useRef(null);
   const bodyRef = useRef(null);
   const toastTimerRef = useRef(null);
@@ -654,7 +763,12 @@ function AdminPage() {
   });
   const coverCrop = getCoverCrop(form.coverPosition);
   const coverZoom = getCoverZoom(form.coverZoom);
-  const productIconSize = Math.max(18, Math.min(60, parseInt(form.productIconSize, 10) || 34));
+  const homeImageCrop = getHomeImageCrop(form.homeImagePosition);
+  const homeImageZoom = getHomeImageZoom(form.homeImageZoom);
+  const productIconSize = Math.max(12, Math.min(140, parseInt(form.productIconSize, 10) || 34));
+  const productIconGap = getProductIconGap(form.productIconGap);
+  const productIconShiftX = getProductIconShiftX(form.productIconShiftX);
+  const productIconShiftY = getProductIconShiftY(form.productIconShiftY);
 
   function showAdminToast(message) {
     setToast(message);
@@ -722,12 +836,12 @@ function AdminPage() {
   const syncOn = localServerOn || !!(window.cheerSync && window.cheerSync.hasToken && window.cheerSync.hasToken());
   function reset() {
     setEditingId(null);
-    setForm({ title: '', excerpt: '', cover: '', coverPosition: '50% 0%', coverZoom: 100, homeImage: '', productIcon: '', productIconSize: 34, appStore: '', googlePlay: '', includeInCarousel: false, author: 'The Cheervinsky Studio', body: '', pinned: false, published: true, status: 'blog', date: new Date().toISOString().slice(0, 10) });
+    setForm({ title: '', excerpt: '', cover: '', coverPosition: '50% 0%', coverZoom: 100, homeImage: '', homeImagePosition: '50% 50%', homeImageZoom: 100, productIcon: '', productIconSize: 34, productIconGap: 8, productIconShiftX: 0, productIconShiftY: 0, appStore: '', googlePlay: '', includeInCarousel: false, author: 'The Cheervinsky Studio', body: '', pinned: false, published: true, status: 'blog', date: new Date().toISOString().slice(0, 10) });
     setShowPreview(false);
   }
   function startEdit(p) {
     setEditingId(p.id);
-    setForm({ title: p.title, excerpt: p.excerpt, cover: p.cover, coverPosition: getCoverPosition(p.coverPosition), coverZoom: getCoverZoom(p.coverZoom), homeImage: p.homeImage || '', productIcon: p.productIcon || '', productIconSize: p.productIconSize || 34, appStore: p.appStore || '', googlePlay: p.googlePlay || '', includeInCarousel: !!p.includeInCarousel, author: p.author, body: p.body, pinned: !!p.pinned, published: p.published !== false, status: p.status === 'product' ? 'product' : 'blog', date: p.date });
+    setForm({ title: p.title, excerpt: p.excerpt, cover: p.cover, coverPosition: getCoverPosition(p.coverPosition), coverZoom: getCoverZoom(p.coverZoom), homeImage: p.homeImage || '', homeImagePosition: getHomeImagePosition(p.homeImagePosition), homeImageZoom: getHomeImageZoom(p.homeImageZoom), productIcon: p.productIcon || '', productIconSize: p.productIconSize || 34, productIconGap: p.productIconGap || 8, productIconShiftX: p.productIconShiftX || 0, productIconShiftY: p.productIconShiftY || 0, appStore: p.appStore || '', googlePlay: p.googlePlay || '', includeInCarousel: !!p.includeInCarousel, author: p.author, body: p.body, pinned: !!p.pinned, published: p.published !== false, status: p.status === 'product' ? 'product' : 'blog', date: p.date });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function savePost(publishedOverride = form.published) {
@@ -755,8 +869,22 @@ function AdminPage() {
   async function onFile(e) {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
+    warnIfJpegUpload(f, 'List + detail page image');
     try {
-      const resized = await resizeImageFile(f, { maxWidth: 1600, maxHeight: 1000, quality: 0.82 });
+      // Keep transparent PNG cover images untouched to avoid any alpha-channel
+      // artifacts from canvas re-encoding.
+      if (f.type === 'image/png') {
+        const pngReader = new FileReader();
+        pngReader.onload = () => setForm(s => ({ ...s, cover: pngReader.result }));
+        pngReader.readAsDataURL(f);
+        return;
+      }
+      const resized = await resizeImageFile(f, {
+        maxWidth: 1600,
+        maxHeight: 1000,
+        quality: 0.82,
+        mimeType: f.type === 'image/png' ? 'image/png' : 'image/jpeg',
+      });
       const reader = new FileReader();
       reader.onload = () => setForm(s => ({ ...s, cover: reader.result }));
       reader.readAsDataURL(resized);
@@ -767,18 +895,19 @@ function AdminPage() {
   async function onHomeImageFile(e) {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
+    warnIfJpegUpload(f, 'Home page preview image');
     try {
-      const resized = await resizeImageFile(f, {
-        maxWidth: 1200,
-        maxHeight: 1800,
-        quality: 0.84,
-        mimeType: f.type === 'image/png' ? 'image/png' : 'image/jpeg',
-      });
-      const mediaId = await window.cheerMedia.saveFile(resized);
+      // Keep Home preview images in original quality to avoid softness in the
+      // carousel phone mockup.
+      const mediaId = await window.cheerMedia.saveFile(f);
       const nextHomeImage = 'media:' + mediaId;
       setForm(s => ({ ...s, homeImage: nextHomeImage }));
       if (editingId) {
-        const saved = window.cheerStore.updatePost(editingId, { homeImage: nextHomeImage });
+        const saved = window.cheerStore.updatePost(editingId, {
+          homeImage: nextHomeImage,
+          homeImagePosition: form.homeImagePosition,
+          homeImageZoom: form.homeImageZoom,
+        });
         if (saved) showAdminToast('Home page preview image updated.');
       }
     } catch (error) {
@@ -848,12 +977,14 @@ function AdminPage() {
       size: options.size || 'full',
       align: options.align || 'center',
       wrap: options.wrap || false,
+      shadow: !!options.shadow,
     };
     const optionParts = [
       caption,
       'size=' + normalizedOptions.size,
       'align=' + normalizedOptions.align,
       'wrap=' + normalizedOptions.wrap,
+      'shadow=' + normalizedOptions.shadow,
     ].filter(Boolean);
     if (options.sideText) optionParts.push('sideText=' + encodeURIComponent(options.sideText));
     if (normalizedType === 'gallery') optionParts.push('columns=' + Math.min(5, Math.max(2, parseInt(options.columns, 10) || 2)));
@@ -890,12 +1021,12 @@ function AdminPage() {
         ? 'video'
         : 'image';
     const options = type === 'image'
-      ? { size: mediaComposer.size, align: mediaComposer.align, wrap: mediaComposer.wrap, sideText: mediaComposer.sideText }
+      ? { size: mediaComposer.size, align: mediaComposer.align, wrap: mediaComposer.wrap, sideText: mediaComposer.sideText, shadow: mediaComposer.shadow }
       : type === 'gallery'
-        ? { columns: mediaComposer.columns, caption: mediaComposer.caption }
+        ? { columns: mediaComposer.columns, caption: mediaComposer.caption, shadow: mediaComposer.shadow }
       : { size: 'full', align: 'center', wrap: false };
     insertMediaBlock(type, source, mediaComposer.caption.trim(), options);
-    setMediaComposer(s => ({ ...s, url: '', uploadedSrc: '', uploadedName: '', uploadedSources: [], uploadedNames: [], caption: '', sideText: '' }));
+    setMediaComposer(s => ({ ...s, url: '', uploadedSrc: '', uploadedName: '', uploadedSources: [], uploadedNames: [], caption: '', sideText: '', shadow: false }));
   }
   function updateBodySelection(transform) {
     const textarea = bodyRef.current;
@@ -1103,8 +1234,9 @@ function AdminPage() {
           </div>
 
           <div className="field">
-            <label>COVER IMAGE</label>
+            <label>LIST + DETAIL PAGE IMAGE</label>
             <input ref={fileRef} type="file" accept="image/*" onChange={onFile} style={{ padding: 8 }} />
+            <p className="field-hint">This image appears on the Blog/Product list card and at the top of the full Blog/Product detail page. It is separate from the Home page image.</p>
             {form.cover && (
               <div className="preview-thumb">
                 <img src={resolveImageRef(form.cover)} alt="" style={getCoverImageStyle(form.coverPosition, form.coverZoom)} />
@@ -1153,9 +1285,9 @@ function AdminPage() {
           </div>
 
           <div className="field">
-            <label>HOME PAGE PREVIEW IMAGE</label>
+            <label>MAIN / HOME PAGE PREVIEW IMAGE</label>
             <input type="file" accept="image/*" onChange={onHomeImageFile} style={{ padding: 8 }} />
-            <p className="field-hint">Optional. This image appears on the homepage carousel/pinned blog phone preview. Existing posts update immediately; new posts use it after publishing.</p>
+            <p className="field-hint">Optional. This image appears only on the Home page carousel or pinned blog block. It does not replace the Blog/Product list image or detail page image.</p>
             {form.homeImage ? (
               <div className="home-image-admin-row">
                 {form.homeImage.startsWith('media:')
@@ -1163,6 +1295,71 @@ function AdminPage() {
                   : <img src={resolveImageRef(form.homeImage)} alt="" />}
                 <span>Homepage preview image selected.</span>
                 <button type="button" onClick={removeHomeImage}>Remove</button>
+              </div>
+            ) : null}
+            {form.homeImage ? (
+              <div className="home-image-placement">
+                <div className="home-image-combined-preview">
+                  <div className="home-image-phone-preview">
+                    <PhoneMockup
+                      src={form.homeImage}
+                      alt=""
+                      className="home-image-preview-phone"
+                      innerStyle={getHomeImageStyle(form.homeImagePosition, form.homeImageZoom)}
+                    />
+                  </div>
+                  <div className="home-image-text-preview">
+                    <p>{form.status === 'product' ? 'PRODUCT' : 'FROM THE BLOG'}</p>
+                    <h4>
+                      {form.status === 'product' && form.productIcon ? (
+                        <img
+                          src={resolveImageRef(form.productIcon)}
+                          alt=""
+                          style={{
+                            width: Math.max(12, Math.min(90, parseInt(form.productIconSize, 10) || 22)),
+                            height: Math.max(12, Math.min(90, parseInt(form.productIconSize, 10) || 22)),
+                            transform: `translate(${productIconShiftX}px, ${productIconShiftY}px)`,
+                          }}
+                        />
+                      ) : null}
+                      <span>{form.title || 'Post title preview'}</span>
+                    </h4>
+                    <span>{form.excerpt || 'Short description preview will appear here so you can check how image and text look together.'}</span>
+                  </div>
+                </div>
+                <div className="home-image-controls">
+                  <span>Adjust Home page image inside the phone preview</span>
+                  <label>
+                    Make image bigger / smaller
+                    <input
+                      type="range"
+                      min="30"
+                      max="700"
+                      value={homeImageZoom}
+                      onChange={e => setForm(s => ({ ...s, homeImageZoom: e.target.value }))}
+                    />
+                  </label>
+                  <label>
+                    Move left / right
+                    <input
+                      type="range"
+                      min="-80"
+                      max="180"
+                      value={homeImageCrop.x}
+                      onChange={e => setForm(s => ({ ...s, homeImagePosition: setHomeImageCropAxis(s.homeImagePosition, 'x', e.target.value) }))}
+                    />
+                  </label>
+                  <label>
+                    Move up / down
+                    <input
+                      type="range"
+                      min="-80"
+                      max="180"
+                      value={homeImageCrop.y}
+                      onChange={e => setForm(s => ({ ...s, homeImagePosition: setHomeImageCropAxis(s.homeImagePosition, 'y', e.target.value) }))}
+                    />
+                  </label>
+                </div>
               </div>
             ) : null}
           </div>
@@ -1207,10 +1404,46 @@ function AdminPage() {
                     Icon size ({productIconSize}px)
                     <input
                       type="range"
-                      min="18"
-                      max="60"
+                      min="12"
+                      max="140"
                       value={productIconSize}
                       onChange={e => setForm(s => ({ ...s, productIconSize: e.target.value }))}
+                    />
+                  </label>
+                </div>
+                <div className="product-icon-size-control">
+                  <label>
+                    Distance from title ({productIconGap}px)
+                    <input
+                      type="range"
+                      min="-80"
+                      max="80"
+                      value={productIconGap}
+                      onChange={e => setForm(s => ({ ...s, productIconGap: e.target.value }))}
+                    />
+                  </label>
+                </div>
+                <div className="product-icon-size-control">
+                  <label>
+                    Horizontal move ({productIconShiftX}px)
+                    <input
+                      type="range"
+                      min="-120"
+                      max="120"
+                      value={productIconShiftX}
+                      onChange={e => setForm(s => ({ ...s, productIconShiftX: e.target.value }))}
+                    />
+                  </label>
+                </div>
+                <div className="product-icon-size-control">
+                  <label>
+                    Vertical move ({productIconShiftY}px)
+                    <input
+                      type="range"
+                      min="-90"
+                      max="90"
+                      value={productIconShiftY}
+                      onChange={e => setForm(s => ({ ...s, productIconShiftY: e.target.value }))}
                     />
                   </label>
                 </div>
@@ -1219,13 +1452,14 @@ function AdminPage() {
                     <img
                       src={resolveImageRef(form.productIcon)}
                       alt=""
-                      style={{ width: productIconSize, height: productIconSize }}
+                      style={{
+                        width: productIconSize,
+                        height: productIconSize,
+                        marginRight: productIconGap,
+                        transform: `translate(${productIconShiftX}px, ${productIconShiftY}px)`,
+                      }}
                     />
-                  ) : (
-                    <span className="ink-mark" style={{ color: 'var(--honey-deep)', fontStyle: 'italic' }}>
-                      {(form.title || 'P')[0]}
-                    </span>
-                  )}
+                  ) : null}
                   <span>{form.title || 'Product title preview'}</span>
                 </div>
               </div>
@@ -1233,14 +1467,17 @@ function AdminPage() {
           )}
 
           <div className="field">
-            <label>BODY (use blank lines between paragraphs, ## for headings)</label>
+            <label>BODY (use blank lines between paragraphs, # / ## / ### for headings)</label>
             <div className="body-format-toolbar" aria-label="Post formatting toolbar">
+              <button type="button" onClick={() => wrapBodySelection('# ', '', 'Main heading')}>H1</button>
+              <button type="button" onClick={() => wrapBodySelection('## ', '', 'Section heading')}>H2</button>
+              <button type="button" onClick={() => wrapBodySelection('### ', '', 'Small heading')}>H3</button>
               <button type="button" onClick={() => wrapBodySelection('**', '**', 'bold text')}>Bold</button>
               <button type="button" onClick={() => wrapBodySelection('*', '*', 'italic text')}>Italic</button>
               <button type="button" onClick={() => wrapBodySelection('__', '__', 'underlined text')}>Underline</button>
               <button type="button" onClick={addLinkToBody}>Link</button>
             </div>
-            <textarea className="post-body-editor" ref={bodyRef} value={form.body} onChange={e => setForm(s => ({ ...s, body: e.target.value }))} placeholder={"## A small heading\n\nA paragraph of plain, warm prose.\n\n{{image:https://example.com/photo.gif|Optional caption|size=medium|align=left|wrap=true}}\n\nMore text after the media."} />
+            <textarea className="post-body-editor" ref={bodyRef} value={form.body} onChange={e => setForm(s => ({ ...s, body: e.target.value }))} placeholder={"# Main heading\n\n## Section heading\n\n### Small heading\n\nA paragraph of plain, warm prose.\n\n{{image:https://example.com/photo.gif|Optional caption|size=medium|align=left|wrap=true}}\n\nMore text after the media."} />
             <div className="media-composer">
               <div className="media-composer-head">
                 <strong>Add media block</strong>
@@ -1299,6 +1536,14 @@ function AdminPage() {
                   />
                   Place text beside the image
                 </label>
+                <label className="media-composer-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={mediaComposer.shadow}
+                    onChange={e => setMediaComposer(s => ({ ...s, shadow: e.target.checked }))}
+                  />
+                  Add drop shadow
+                </label>
               </div>
               <div className="media-insert-row">
                 <label className="btn ghost">
@@ -1324,7 +1569,7 @@ function AdminPage() {
             <label htmlFor="published">Publish this post publicly</label>
           </div>
 
-          <div className="row">
+          <div className="row admin-save-row">
             <button type="submit" className="btn dark">{editingId ? 'Save changes' : 'Publish post'}</button>
             <button type="button" className="btn ghost" onClick={() => savePost(false)}>Save as draft</button>
             <button type="button" className="btn ghost" onClick={() => setShowPreview(v => !v)}>{showPreview ? 'Hide preview' : 'Preview'}</button>

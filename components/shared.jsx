@@ -48,19 +48,12 @@ function CrowLogo({ size = 84 }) {
 // --- Icons (Lucide-style) ---
 function IconYouTube() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-      <rect x="2" y="6" width="20" height="12" rx="3" />
-      <polygon points="10,9 16,12 10,15" fill="#FFC72A" />
-    </svg>
+    <img src="assets/youtube_icon.png" alt="" />
   );
 }
 function IconInstagram() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" />
-    </svg>
+    <img src="assets/instagram_icon.png" alt="" />
   );
 }
 function IconArrow({ left }) {
@@ -311,7 +304,7 @@ function PhoneMockup({ src, alt = '', className = '', innerStyle = {} }) {
             position: 'absolute',
             top: '2.6%', left: '5.4%',
             width: '89%', height: '94.8%',
-            objectFit: 'cover',
+            objectFit: 'contain',
             borderRadius: '7%',
             zIndex: 1,
             ...innerStyle,
