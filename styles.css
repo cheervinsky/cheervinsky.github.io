@@ -2689,10 +2689,22 @@ img { display: block; max-width: 100%; }
   .route-home .hero-brand {
     text-align: center;
     padding-top: 10px;
+    padding-left: 4vw;
+    padding-right: 4vw;
   }
   .route-home .hero-title {
     justify-content: center;
     align-items: baseline;
+    width: 100%;
+    gap: 8px;
+  }
+  .route-home .hero-brand .crow {
+    height: 56px !important;
+    margin-right: 2px;
+  }
+  .route-home .hero-brand h1 {
+    font-size: clamp(34px, 9.6vw, 48px);
+    line-height: 0.96;
   }
   .route-home .hero-brand .tagline { margin: 10px auto 0; }
   .route-home .section { padding-top: 24px; padding-bottom: 24px; }
