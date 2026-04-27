@@ -668,7 +668,6 @@ function ProductsPage() {
 }
 
 function ContactsPage() {
-  const [sent, setSent] = useState(false);
   return (
     <div className="page">
       <div className="contacts-page">
@@ -676,30 +675,9 @@ function ContactsPage() {
           <h1>Hello.</h1>
           <p className="lede">We're a small studio in Lisbon, two people who answer their own email. We'd love to hear from you — whether it's a question, an idea, or a quiet hello.</p>
           <ul className="contact-list">
-            <li><span className="label">EMAIL</span><span className="value">hello@cheervinsky.studio</span></li>
-            <li><span className="label">PRESS</span><span className="value">press@cheervinsky.studio</span></li>
-            <li><span className="label">SUPPORT</span><span className="value">support@cheervinsky.studio</span></li>
-            <li><span className="label">STUDIO</span><span className="value">Rua das Flores 12, Lisboa</span></li>
-            <li><span className="label">HOURS</span><span className="value">Mon–Fri, 09:00–17:00 WET</span></li>
+            <li><span className="label">EMAIL</span><span className="value">shish.hamish@gmail.com</span></li>
           </ul>
         </div>
-        <form className="contact-form" onSubmit={e => { e.preventDefault(); setSent(true); }}>
-          <div>
-            <label>NAME</label>
-            <input type="text" required placeholder="Your name" />
-          </div>
-          <div>
-            <label>EMAIL</label>
-            <input type="email" required placeholder="you@somewhere.com" />
-          </div>
-          <div>
-            <label>MESSAGE</label>
-            <textarea required placeholder="Say a little hello, or tell us what's on your mind." />
-          </div>
-          <button type="submit" className="btn dark" style={{ alignSelf: 'flex-start' }}>
-            {sent ? 'Sent — thank you.' : 'Send a note →'}
-          </button>
-        </form>
       </div>
     </div>
   );

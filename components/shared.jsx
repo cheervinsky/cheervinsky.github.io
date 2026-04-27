@@ -169,8 +169,8 @@ function Header({ route }) {
           >{l.label}</a>
         ))}
         <span className="socials">
-          <a href="#" aria-label="YouTube"><IconYouTube /></a>
-          <a href="#" aria-label="Instagram"><IconInstagram /></a>
+          <a href="https://www.youtube.com/@cheervinsky" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><IconYouTube /></a>
+          <a href="https://www.instagram.com/cheervinsky/" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><IconInstagram /></a>
         </span>
       </nav>
     </header>
@@ -186,7 +186,7 @@ function Footer({ route }) {
         <a href="#blog">BLOG</a>
         <a href="#contacts">CONTACTS</a>
       </nav>
-      <a href="#contacts" className="terms">Terms and Conditions and Privacy Policy</a>
+      <a href="https://itmaryna.github.io/" className="terms" target="_blank" rel="noopener noreferrer">Terms and Conditions and Privacy Policy</a>
       <div style={{ marginTop: 18, fontSize: 12, color: 'var(--ink-2)', fontFamily: "'Vollkorn SC', serif", letterSpacing: '0.08em' }}>
         © 2026 Cheervinsky Studio · Made with care
       </div>

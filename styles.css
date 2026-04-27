@@ -282,7 +282,7 @@ img { display: block; max-width: 100%; }
 }
 .route-home .hero-brand .tagline {
   margin: 8px 0 0;
-  max-width: 560px;
+  max-width: 820px;
   line-height: 1.45;
   transition: transform 180ms var(--ease-soft), opacity 180ms var(--ease-soft);
 }
@@ -934,7 +934,30 @@ img { display: block; max-width: 100%; }
 .arrow-btn:hover { background: #fff; transform: translateY(-1px); }
 .arrow-btn svg { width: 16px; height: 16px; stroke: var(--ink); }
 .route-home .arrow-btn {
-  display: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  opacity: 0.95;
+}
+.route-home .arrow-btn svg {
+  width: 12px;
+  height: 12px;
+  stroke: #fff;
+  stroke-width: 2.2;
+}
+.route-home .arrow-btn:hover {
+  background: transparent;
+  transform: none;
+  opacity: 1;
+}
+.route-home .arrow-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.75);
+  outline-offset: 2px;
 }
 
 /* Curvy decorative line */
@@ -1114,6 +1137,10 @@ img { display: block; max-width: 100%; }
   color: var(--ink-3);
   max-width: 220px;
   line-height: 1.4;
+}
+.feature h3 .feature-highlight {
+  font-size: 1.18em;
+  font-weight: 800;
 }
 .route-home .feature h3 {
   font-size: 12px;

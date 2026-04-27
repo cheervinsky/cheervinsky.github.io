@@ -820,10 +820,10 @@ function Header({ route }) {
       className: route === l.id ? "active" : ""
     },
     l.label
-  )), /* @__PURE__ */ React.createElement("span", { className: "socials" }, /* @__PURE__ */ React.createElement("a", { href: "#", "aria-label": "YouTube" }, /* @__PURE__ */ React.createElement(IconYouTube, null)), /* @__PURE__ */ React.createElement("a", { href: "#", "aria-label": "Instagram" }, /* @__PURE__ */ React.createElement(IconInstagram, null)))));
+  )), /* @__PURE__ */ React.createElement("span", { className: "socials" }, /* @__PURE__ */ React.createElement("a", { href: "https://www.youtube.com/@cheervinsky", "aria-label": "YouTube", target: "_blank", rel: "noopener noreferrer" }, /* @__PURE__ */ React.createElement(IconYouTube, null)), /* @__PURE__ */ React.createElement("a", { href: "https://www.instagram.com/cheervinsky/", "aria-label": "Instagram", target: "_blank", rel: "noopener noreferrer" }, /* @__PURE__ */ React.createElement(IconInstagram, null)))));
 }
 function Footer({ route }) {
-  return /* @__PURE__ */ React.createElement("footer", { className: "site-footer" + (route === "home" ? " home-footer" : "") }, /* @__PURE__ */ React.createElement("nav", { className: "nav" }, /* @__PURE__ */ React.createElement("a", { href: "#products" }, "PRODUCTS"), /* @__PURE__ */ React.createElement("a", { href: "#blog" }, "BLOG"), /* @__PURE__ */ React.createElement("a", { href: "#contacts" }, "CONTACTS")), /* @__PURE__ */ React.createElement("a", { href: "#contacts", className: "terms" }, "Terms and Conditions and Privacy Policy"), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 18, fontSize: 12, color: "var(--ink-2)", fontFamily: "'Vollkorn SC', serif", letterSpacing: "0.08em" } }, "\xA9 2026 Cheervinsky Studio \xB7 Made with care"));
+  return /* @__PURE__ */ React.createElement("footer", { className: "site-footer" + (route === "home" ? " home-footer" : "") }, /* @__PURE__ */ React.createElement("nav", { className: "nav" }, /* @__PURE__ */ React.createElement("a", { href: "#products" }, "PRODUCTS"), /* @__PURE__ */ React.createElement("a", { href: "#blog" }, "BLOG"), /* @__PURE__ */ React.createElement("a", { href: "#contacts" }, "CONTACTS")), /* @__PURE__ */ React.createElement("a", { href: "https://itmaryna.github.io/", className: "terms", target: "_blank", rel: "noopener noreferrer" }, "Terms and Conditions and Privacy Policy"), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 18, fontSize: 12, color: "var(--ink-2)", fontFamily: "'Vollkorn SC', serif", letterSpacing: "0.08em" } }, "\xA9 2026 Cheervinsky Studio \xB7 Made with care"));
 }
 function LiquidGlassDefs() {
   return /* @__PURE__ */ React.createElement("svg", { className: "svg-filter-defs", width: "0", height: "0", "aria-hidden": "true", focusable: "false" }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("filter", { id: "liquid-glass-distortion", x: "-20%", y: "-20%", width: "140%", height: "140%" }, /* @__PURE__ */ React.createElement(
@@ -1034,15 +1034,15 @@ function PinnedPost() {
 function FeaturesStrip() {
   const items = [
     {
-      title: "FIRST EMDR AND BREATHING APP",
+      title: /* @__PURE__ */ React.createElement(React.Fragment, null, "TRUSTED BY ", /* @__PURE__ */ React.createElement("span", { className: "feature-highlight" }, "20,000+ USERS"), " WORLDWIDE"),
       icon: /* @__PURE__ */ React.createElement("img", { src: "assets/first_place_icon.png", alt: "" })
     },
     {
-      title: "THE MOST UNIQUE APP",
+      title: "BUILT ON REAL NEUROSCIENCE & EVIDENCE-BASED RESEARCH",
       icon: /* @__PURE__ */ React.createElement("img", { src: "assets/unique_apps_icon.png", alt: "" })
     },
     {
-      title: "REAL IMPROVEMENTS OF YOUR LIFE",
+      title: "NO TRUE ALTERNATIVES ON THE MARKET",
       icon: /* @__PURE__ */ React.createElement("img", { src: "assets/user_selection_icon.png", alt: "" })
     }
   ];
@@ -1050,14 +1050,14 @@ function FeaturesStrip() {
 }
 function MoreFeatures() {
   const items = [
-    { num: "01 \xB7 ECOSYSTEM", title: "Five apps. One studio.", body: "Each app shares the same warm visual language and the same calm philosophy. Switch between them and nothing jars." },
-    { num: "02 \xB7 OFFLINE FIRST", title: "Yours, on your device.", body: "No accounts, no sync server, no telemetry. Your journal, your timer, your habits \u2014 they live where they belong." },
-    { num: "03 \xB7 SLOW BY DESIGN", title: "Nothing is in a hurry.", body: "Animations breathe. Reminders fade in. Streaks forgive. We make tools for a life worth slowing down for." },
-    { num: "04 \xB7 ACCESSIBLE", title: "Built for every reader.", body: "High-contrast text, generous tap targets, full keyboard navigation, reduced-motion mode. Always, by default." },
-    { num: "05 \xB7 NO ADS, EVER", title: "A small, honest price.", body: "A single fair purchase unlocks the whole studio for life. No subscriptions, no upsells, no dark patterns." },
-    { num: "06 \xB7 OPEN ROADMAP", title: "You'll know what's next.", body: "We publish what we're working on, what we're reading, and what we're wrestling with. Every month, plainly." }
+    { num: "01 \xB7 ONE ECOSYSTEM", title: "Everything, in harmony.", body: "All apps live within one cohesive ecosystem - one philosophy, one visual language, one seamless experience. Move between them effortlessly. Nothing breaks your flow." },
+    { num: "02 \xB7 OFFLINE FIRST", title: "Yours, on your device.", body: "No accounts, no sync server, no telemetry. Your journal, your timer, your habits - they live where they belong." },
+    { num: "03 \xB7 SLOW BY DESIGN", title: "Nothing is in a hurry.", body: "Every interaction is shaped around human psychology and natural behavior patterns. Animations breathe. Reminders arrive gently. Tools that respect your pace - not fight it." },
+    { num: "04 \xB7 BUILT FOR MODERN LIFE", title: "Clarity in a noisy world.", body: "Continuously updated with the latest scientific insights and shaped by the realities of modern life - from social media overload to AI acceleration. Designed to help you disconnect, regain control, and think clearly again." },
+    { num: "05 \xB7 HONEST PRICING", title: "Fair, and made to be accessible.", body: "Pricing is kept simple and considerate - designed to be available to as many people as possible. Minimal advertising, no manipulation, no pressure." },
+    { num: "06 \xB7 OPEN ROADMAP", title: "You'll know what's next.", body: "We share what we're building, exploring, and questioning - openly, every month." }
   ];
-  return /* @__PURE__ */ React.createElement("section", { className: "section", style: { paddingTop: 96, paddingBottom: 96 } }, /* @__PURE__ */ React.createElement("span", { className: "section-eyebrow" }, "WHAT WE BELIEVE"), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "A studio you can trust with your time."), /* @__PURE__ */ React.createElement("div", { className: "more-features" }, items.map((it, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: "feature-card", style: { animationDelay: i * 60 + "ms" } }, /* @__PURE__ */ React.createElement("p", { className: "num" }, it.num), /* @__PURE__ */ React.createElement("h4", null, it.title), /* @__PURE__ */ React.createElement("p", null, it.body)))));
+  return /* @__PURE__ */ React.createElement("section", { className: "section", style: { paddingTop: 96, paddingBottom: 96 } }, /* @__PURE__ */ React.createElement("span", { className: "section-eyebrow" }, "YOU'RE IN GOOD HANDS"), /* @__PURE__ */ React.createElement("h2", { className: "section-title" }, "A studio you can trust with your time."), /* @__PURE__ */ React.createElement("div", { className: "more-features" }, items.map((it, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: "feature-card", style: { animationDelay: i * 60 + "ms" } }, /* @__PURE__ */ React.createElement("p", { className: "num" }, it.num), /* @__PURE__ */ React.createElement("h4", null, it.title), /* @__PURE__ */ React.createElement("p", null, it.body)))));
 }
 function HomePage() {
   const [titleProgress, setTitleProgress] = useState2(0);
@@ -1095,7 +1095,11 @@ function HomePage() {
         transform: `translateY(${-14 * titleProgress}px)`
       }
     },
-    "A small studio of warm, careful apps. Tools for relaxing, focusing, noticing yourself, and making the everyday a little more playful."
+    "Warm, careful apps built on ",
+    /* @__PURE__ */ React.createElement("strong", null, "neuroscience"),
+    " and attention science - designed for a world that has become extremely efficient at distracting you. We help you focus, relax, and ",
+    /* @__PURE__ */ React.createElement("strong", null, "remember what you were doing five seconds ago"),
+    "."
   )), /* @__PURE__ */ React.createElement(Carousel, null), /* @__PURE__ */ React.createElement(PinnedPost, null), /* @__PURE__ */ React.createElement(FeaturesStrip, null), /* @__PURE__ */ React.createElement(MoreFeatures, null));
 }
 Object.assign(window, { HomePage, Carousel, PinnedPost, FeaturesStrip, MoreFeatures });
@@ -1507,11 +1511,7 @@ function ProductsPage() {
   })), /* @__PURE__ */ React.createElement(PaginationControls, { currentPage, totalPages, onPageChange: setPage, label: "Products pagination bottom" }));
 }
 function ContactsPage() {
-  const [sent, setSent] = useState(false);
-  return /* @__PURE__ */ React.createElement("div", { className: "page" }, /* @__PURE__ */ React.createElement("div", { className: "contacts-page" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h1", null, "Hello."), /* @__PURE__ */ React.createElement("p", { className: "lede" }, "We're a small studio in Lisbon, two people who answer their own email. We'd love to hear from you \u2014 whether it's a question, an idea, or a quiet hello."), /* @__PURE__ */ React.createElement("ul", { className: "contact-list" }, /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "label" }, "EMAIL"), /* @__PURE__ */ React.createElement("span", { className: "value" }, "hello@cheervinsky.studio")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PRESS"), /* @__PURE__ */ React.createElement("span", { className: "value" }, "press@cheervinsky.studio")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "label" }, "SUPPORT"), /* @__PURE__ */ React.createElement("span", { className: "value" }, "support@cheervinsky.studio")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "label" }, "STUDIO"), /* @__PURE__ */ React.createElement("span", { className: "value" }, "Rua das Flores 12, Lisboa")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "label" }, "HOURS"), /* @__PURE__ */ React.createElement("span", { className: "value" }, "Mon\u2013Fri, 09:00\u201317:00 WET")))), /* @__PURE__ */ React.createElement("form", { className: "contact-form", onSubmit: (e) => {
-    e.preventDefault();
-    setSent(true);
-  } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", null, "NAME"), /* @__PURE__ */ React.createElement("input", { type: "text", required: true, placeholder: "Your name" })), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", null, "EMAIL"), /* @__PURE__ */ React.createElement("input", { type: "email", required: true, placeholder: "you@somewhere.com" })), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", null, "MESSAGE"), /* @__PURE__ */ React.createElement("textarea", { required: true, placeholder: "Say a little hello, or tell us what's on your mind." })), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn dark", style: { alignSelf: "flex-start" } }, sent ? "Sent \u2014 thank you." : "Send a note \u2192"))));
+  return /* @__PURE__ */ React.createElement("div", { className: "page" }, /* @__PURE__ */ React.createElement("div", { className: "contacts-page" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h1", null, "Hello."), /* @__PURE__ */ React.createElement("p", { className: "lede" }, "We're a small studio in Lisbon, two people who answer their own email. We'd love to hear from you \u2014 whether it's a question, an idea, or a quiet hello."), /* @__PURE__ */ React.createElement("ul", { className: "contact-list" }, /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "label" }, "EMAIL"), /* @__PURE__ */ React.createElement("span", { className: "value" }, "shish.hamish@gmail.com"))))));
 }
 function resizeImageFile(file, { maxWidth = 1600, maxHeight = 1600, quality = 0.82, mimeType = "image/jpeg" } = {}) {
   return new Promise((resolve, reject) => {

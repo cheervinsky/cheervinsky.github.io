@@ -178,15 +178,15 @@ function PinnedPost() {
 function FeaturesStrip() {
   const items = [
     {
-      title: 'FIRST EMDR AND BREATHING APP',
+      title: <>TRUSTED BY <span className="feature-highlight">20,000+ USERS</span> WORLDWIDE</>,
       icon: <img src="assets/first_place_icon.png" alt="" />
     },
     {
-      title: 'THE MOST UNIQUE APP',
+      title: 'BUILT ON REAL NEUROSCIENCE & EVIDENCE-BASED RESEARCH',
       icon: <img src="assets/unique_apps_icon.png" alt="" />
     },
     {
-      title: 'REAL IMPROVEMENTS OF YOUR LIFE',
+      title: 'NO TRUE ALTERNATIVES ON THE MARKET',
       icon: <img src="assets/user_selection_icon.png" alt="" />
     }
   ];
@@ -206,16 +206,16 @@ function FeaturesStrip() {
 
 function MoreFeatures() {
   const items = [
-    { num: '01 · ECOSYSTEM', title: 'Five apps. One studio.', body: 'Each app shares the same warm visual language and the same calm philosophy. Switch between them and nothing jars.' },
-    { num: '02 · OFFLINE FIRST', title: 'Yours, on your device.', body: 'No accounts, no sync server, no telemetry. Your journal, your timer, your habits — they live where they belong.' },
-    { num: '03 · SLOW BY DESIGN', title: 'Nothing is in a hurry.', body: 'Animations breathe. Reminders fade in. Streaks forgive. We make tools for a life worth slowing down for.' },
-    { num: '04 · ACCESSIBLE', title: 'Built for every reader.', body: 'High-contrast text, generous tap targets, full keyboard navigation, reduced-motion mode. Always, by default.' },
-    { num: '05 · NO ADS, EVER', title: 'A small, honest price.', body: 'A single fair purchase unlocks the whole studio for life. No subscriptions, no upsells, no dark patterns.' },
-    { num: '06 · OPEN ROADMAP', title: 'You\'ll know what\'s next.', body: 'We publish what we\'re working on, what we\'re reading, and what we\'re wrestling with. Every month, plainly.' }
+    { num: '01 · ONE ECOSYSTEM', title: 'Everything, in harmony.', body: 'All apps live within one cohesive ecosystem - one philosophy, one visual language, one seamless experience. Move between them effortlessly. Nothing breaks your flow.' },
+    { num: '02 · OFFLINE FIRST', title: 'Yours, on your device.', body: 'No accounts, no sync server, no telemetry. Your journal, your timer, your habits - they live where they belong.' },
+    { num: '03 · SLOW BY DESIGN', title: 'Nothing is in a hurry.', body: 'Every interaction is shaped around human psychology and natural behavior patterns. Animations breathe. Reminders arrive gently. Tools that respect your pace - not fight it.' },
+    { num: '04 · BUILT FOR MODERN LIFE', title: 'Clarity in a noisy world.', body: 'Continuously updated with the latest scientific insights and shaped by the realities of modern life - from social media overload to AI acceleration. Designed to help you disconnect, regain control, and think clearly again.' },
+    { num: '05 · HONEST PRICING', title: 'Fair, and made to be accessible.', body: 'Pricing is kept simple and considerate - designed to be available to as many people as possible. Minimal advertising, no manipulation, no pressure.' },
+    { num: '06 · OPEN ROADMAP', title: 'You\'ll know what\'s next.', body: 'We share what we\'re building, exploring, and questioning - openly, every month.' }
   ];
   return (
     <section className="section" style={{ paddingTop: 96, paddingBottom: 96 }}>
-      <span className="section-eyebrow">WHAT WE BELIEVE</span>
+      <span className="section-eyebrow">YOU'RE IN GOOD HANDS</span>
       <h2 className="section-title">A studio you can trust with your time.</h2>
       <div className="more-features">
         {items.map((it, i) => (
@@ -269,7 +269,8 @@ function HomePage() {
             transform: `translateY(${-14 * titleProgress}px)`,
           }}
         >
-          A small studio of warm, careful apps. Tools for relaxing, focusing, noticing yourself, and making the everyday a little more playful.
+          Warm, careful apps built on <strong>neuroscience</strong> and attention science - designed for a world that has become extremely efficient at distracting you.
+          We help you focus, relax, and <strong>remember what you were doing five seconds ago</strong>.
         </p>
       </section>
       <Carousel />
