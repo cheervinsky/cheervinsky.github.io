@@ -1966,7 +1966,8 @@ function ParallaxOrbs() {
 }
 function App() {
   const { route, param, hidden } = useRoute();
-  const isAdminSession = sessionStorage.getItem("cheer_admin_session") === "1";
+  const isLocalDev = window.location.protocol === "http:" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+  const isAdminSession = isLocalDev || sessionStorage.getItem("cheer_admin_session") === "1";
   React.useEffect(() => {
     localStorage.removeItem("cheer_admin_session");
   }, []);

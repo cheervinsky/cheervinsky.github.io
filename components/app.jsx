@@ -45,7 +45,12 @@ function ParallaxOrbs() {
 
 function App() {
   const { route, param, hidden } = useRoute();
-  const isAdminSession = sessionStorage.getItem('cheer_admin_session') === '1';
+  // When the page is opened from the local dev server (serve.js), there's no
+  // need for a PAT — running a local server already proves you have write
+  // access to the project files. So localhost auto-counts as admin.
+  const isLocalDev = (window.location.protocol === 'http:') &&
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  const isAdminSession = isLocalDev || sessionStorage.getItem('cheer_admin_session') === '1';
 
   React.useEffect(() => {
     // Clear any previous persistent admin flag; admin is session-only.
