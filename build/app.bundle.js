@@ -321,7 +321,13 @@ Finally. Markdown, PDF, or plain text. Your data, your file, no account required
       localStorage.setItem(KEY, JSON.stringify(state2));
       return true;
     } catch (e) {
-      const message = e && e.name === "QuotaExceededError" ? "This post is too large for browser storage. Please use video links instead of uploading video files, and keep uploaded images/GIFs small." : "The post could not be saved in browser storage.";
+      const isQuota = e && (e.name === "QuotaExceededError" || /quota/i.test(String(e.message || "")));
+      const haveDiskDest = !!localApi || SYNC && SYNC.hasToken && SYNC.hasToken();
+      if (haveDiskDest && isQuota) {
+        console.warn("[cheerStore] localStorage cache full; relying on disk save instead.");
+        return false;
+      }
+      const message = isQuota ? "This post is too large for browser storage. Start the local dev server (node serve.js) so changes can be saved to disk instead." : "The post could not be saved in browser storage.";
       alert(message);
       window.dispatchEvent(new CustomEvent("cheer-store-save-error", { detail: { message } }));
       return false;
@@ -594,14 +600,9 @@ Finally. Markdown, PDF, or plain text. Your data, your file, no account required
       notifySaveError("Could not apply this change.");
       return null;
     }
-    if (!saveLocal(state)) {
-      state = previous;
-      return null;
-    }
     broadcast();
     await probeLocalApi();
     const canExternalise = !!localApi || SYNC && SYNC.hasToken();
-    const canPush = canExternalise;
     if (canExternalise && opts.externaliseId) {
       try {
         const idx = state.posts.findIndex((p) => p.id === opts.externaliseId);
@@ -609,7 +610,6 @@ Finally. Markdown, PDF, or plain text. Your data, your file, no account required
           const externalised = await externaliseImages(state.posts[idx]);
           if (externalised !== state.posts[idx]) {
             state.posts[idx] = externalised;
-            saveLocal(state);
             broadcast();
           }
         }
@@ -617,11 +617,13 @@ Finally. Markdown, PDF, or plain text. Your data, your file, no account required
         notifyRemoteSync({ ok: false, message: "Could not upload images: " + (e && e.message ? e.message : e) });
       }
     }
-    if (canPush) {
+    if (!saveLocal(state)) {
+    }
+    if (canExternalise) {
       const result = await pushToRemote();
       notifyRemoteSync(result);
-      if (!result.ok) {
-      }
+    } else {
+      notifyRemoteSync({ ok: false, message: "Save was kept only in browser memory. Start the local dev server (node serve.js) to write changes to disk." });
     }
     return mutated;
   }

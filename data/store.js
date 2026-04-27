@@ -51,8 +51,17 @@
       localStorage.setItem(KEY, JSON.stringify(state));
       return true;
     } catch (e) {
-      const message = e && e.name === 'QuotaExceededError'
-        ? 'This post is too large for browser storage. Please use video links instead of uploading video files, and keep uploaded images/GIFs small.'
+      const isQuota = e && (e.name === 'QuotaExceededError' || /quota/i.test(String(e.message || '')));
+      // If we have a disk destination (local dev server or GitHub PAT),
+      // localStorage failure is non-fatal — the on-disk push is the real
+      // source of truth. Just log; don't disrupt the user.
+      const haveDiskDest = !!localApi || (SYNC && SYNC.hasToken && SYNC.hasToken());
+      if (haveDiskDest && isQuota) {
+        console.warn('[cheerStore] localStorage cache full; relying on disk save instead.');
+        return false;
+      }
+      const message = isQuota
+        ? 'This post is too large for browser storage. Start the local dev server (node serve.js) so changes can be saved to disk instead.'
         : 'The post could not be saved in browser storage.';
       alert(message);
       window.dispatchEvent(new CustomEvent('cheer-store-save-error', { detail: { message } }));
@@ -346,7 +355,15 @@
     window.dispatchEvent(new CustomEvent('cheer-store-remote-sync', { detail }));
   }
 
-  // Wraps a synchronous mutation with: local save -> async externalise+push.
+  // Wraps a mutation with: optimistic broadcast -> externalise images to disk
+  // -> persist slim state to localStorage -> push posts.json to disk/GitHub.
+  //
+  // Important ordering note:
+  //   We do externalise BEFORE writing to localStorage, because data: URLs
+  //   for big images (or videos pasted as base64) blow past the ~5MB
+  //   localStorage quota. After externalisation the post only carries a tiny
+  //   "data/media/<filename>" or "ghmedia/<filename>" reference, which fits
+  //   comfortably.
   async function commitMutation(mutator, opts = {}) {
     const previous = clone(state);
     let mutated;
@@ -357,18 +374,16 @@
       notifySaveError('Could not apply this change.');
       return null;
     }
-    if (!saveLocal(state)) {
-      state = previous;
-      return null;
-    }
+
+    // Optimistic UI update first — components re-render against in-memory state
+    // immediately, even before disk uploads finish.
     broadcast();
 
-    // Make sure we know whether the local server is up before deciding what
-    // to do with image bytes and where to push the JSON.
     await probeLocalApi();
     const canExternalise = !!localApi || (SYNC && SYNC.hasToken());
-    const canPush = canExternalise;
 
+    // Step 1: upload any inline images BEFORE we touch localStorage. This
+    // prevents the "post too large for browser storage" alert on big images.
     if (canExternalise && opts.externaliseId) {
       try {
         const idx = state.posts.findIndex(p => p.id === opts.externaliseId);
@@ -376,21 +391,33 @@
           const externalised = await externaliseImages(state.posts[idx]);
           if (externalised !== state.posts[idx]) {
             state.posts[idx] = externalised;
-            saveLocal(state);
             broadcast();
           }
         }
       } catch (e) {
         notifyRemoteSync({ ok: false, message: 'Could not upload images: ' + (e && e.message ? e.message : e) });
-        // We'll still try to push the JSON so the text changes aren't lost.
+        // Keep going — text changes still need to land somewhere.
       }
     }
-    if (canPush) {
+
+    // Step 2: persist the (now slim) state to localStorage as a cache.
+    if (!saveLocal(state)) {
+      // localStorage write failed (likely quota even after externalisation —
+      // could happen if the user has many huge posts already cached, OR if
+      // they're not running the local server and the post still has data: URLs).
+      // Don't roll back: the disk push below is the source of truth.
+      // saveLocal already alert()ed the user.
+    }
+
+    // Step 3: push the slim posts.json to disk (local server) or repo (PAT).
+    if (canExternalise) {
       const result = await pushToRemote();
       notifyRemoteSync(result);
-      if (!result.ok) {
-        // Keep local change so the user doesn't lose work; surface the failure.
-      }
+    } else {
+      // No local server, no PAT — there's literally nowhere to put it but
+      // localStorage, and that just failed if we got here from the saveLocal
+      // failure path. Surface a nudge.
+      notifyRemoteSync({ ok: false, message: 'Save was kept only in browser memory. Start the local dev server (node serve.js) to write changes to disk.' });
     }
     return mutated;
   }

@@ -28,8 +28,9 @@ if [ -z "$ESBUILD" ]; then
 fi
 
 # --- Concatenate inputs in the same order index.html used to load them ------
-TMP="$(mktemp -t cheer-bundle.XXXXXX.jsx)"
-trap 'rm -f "$TMP"' EXIT
+TMP_BASE="$(mktemp -t cheer-bundle.XXXXXX)"
+TMP="$TMP_BASE.jsx"
+trap 'rm -f "$TMP" "$TMP_BASE"' EXIT
 cat \
   "$HERE/data/defaults.js" \
   "$HERE/data/sync.js" \
