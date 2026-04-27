@@ -700,6 +700,24 @@ function AdminPage() {
       window.cheerStore.refreshFromRemote().then(() => showAdminToast('Reloaded from GitHub.'));
     }
   }
+  // Download the current state as data/posts.json — for the "edit locally, then
+  // git push" workflow when the in-browser PAT sync isn't being used.
+  function downloadPostsJson() {
+    const payload = window.cheerStore.exportData();
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'posts.json';
+    link.click();
+    URL.revokeObjectURL(url);
+    const cmd = 'mv ~/Downloads/posts.json ~/Downloads/Cheervinsky\\ Design\\ System/data/posts.json && cd ~/Downloads/Cheervinsky\\ Design\\ System && git add data/posts.json && git commit -m "Update posts" && git push';
+    setTimeout(() => {
+      if (confirm('Downloaded posts.json to your Downloads folder.\n\nClick OK to copy the publish command to your clipboard, then paste it into Terminal.')) {
+        try { navigator.clipboard.writeText(cmd); } catch (e) {}
+      }
+    }, 200);
+  }
   const syncOn = !!(window.cheerSync && window.cheerSync.hasToken && window.cheerSync.hasToken());
   function reset() {
     setEditingId(null);
@@ -1064,6 +1082,7 @@ function AdminPage() {
         </span>
         {syncOn ? <button type="button" className="btn ghost" onClick={copyAdminLink}>Copy secret admin link</button> : null}
         <button type="button" className="btn ghost" onClick={manualResync}>Reload from GitHub</button>
+        <button type="button" className="btn dark" onClick={downloadPostsJson} title="Download posts.json — then move it into data/ and git push to publish.">Publish to production…</button>
       </div>
 
       <div className="admin-grid">
