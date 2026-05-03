@@ -673,7 +673,7 @@ function ContactsPage() {
       <div className="contacts-page">
         <div>
           <h1>Hello.</h1>
-          <p className="lede">We're a small studio in Lisbon, two people who answer their own email. We'd love to hear from you — whether it's a question, an idea, or a quiet hello.</p>
+          <p className="lede">We design and build with care. We value meaningful conversations — whether it's a question, an idea, or simply reaching out.</p>
           <ul className="contact-list">
             <li><span className="label">EMAIL</span><span className="value">shish.hamish@gmail.com</span></li>
           </ul>
