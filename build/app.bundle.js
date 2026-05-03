@@ -1458,6 +1458,40 @@ function renderPostBody(body, editor = {}) {
     return /* @__PURE__ */ React.createElement("p", { key: i }, renderInlineText(trim));
   });
 }
+function buildShareUrl(hashFragment) {
+  const h = (hashFragment || "").startsWith("#") ? hashFragment : "#" + hashFragment;
+  if (typeof window === "undefined") return h;
+  return window.location.origin + window.location.pathname + (window.location.search || "") + h;
+}
+function SharePageButton({ title, hashFragment }) {
+  const [hint, setHint] = useState("");
+  function onShare() {
+    const url = buildShareUrl(hashFragment);
+    const shareTitle = title && String(title).trim() ? String(title).trim() : "Cheervinsky";
+    (async () => {
+      try {
+        if (typeof navigator !== "undefined" && navigator.share) {
+          await navigator.share({ title: shareTitle, text: shareTitle, url });
+          return;
+        }
+      } catch (e) {
+        if (e && (e.name === "AbortError" || e.name === "NotAllowedError")) return;
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+          setHint("Link copied");
+          setTimeout(() => setHint(""), 2500);
+        } else {
+          window.prompt("Copy this link:", url);
+        }
+      } catch (e2) {
+        window.prompt("Copy this link:", url);
+      }
+    })();
+  }
+  return /* @__PURE__ */ React.createElement("div", { className: "post-share-wrap" }, /* @__PURE__ */ React.createElement("button", { type: "button", className: "btn ghost post-share-btn", onClick: onShare, "aria-label": "Share link to this page" }, "Share"), hint ? /* @__PURE__ */ React.createElement("span", { className: "post-share-hint", role: "status" }, hint) : null);
+}
 function PostPage({ id }) {
   const store = useStore();
   const isAdminSession = sessionStorage.getItem("cheer_admin_session") === "1";
@@ -1467,7 +1501,7 @@ function PostPage({ id }) {
   }
   const blocks = renderPostBody(post.body);
   const isProductPost = post.status === "product";
-  return /* @__PURE__ */ React.createElement("div", { className: "page post-page" }, /* @__PURE__ */ React.createElement("article", { className: "detail-content-panel" }, /* @__PURE__ */ React.createElement("a", { href: isProductPost ? "#products" : "#blog", className: "back-link" }, "\u2190 Back to ", isProductPost ? "products" : "blog"), post.cover ? /* @__PURE__ */ React.createElement("div", { className: "post-cover" }, /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(post.cover), alt: "", style: getCoverImageStyle(post.coverPosition, post.coverZoom, { width: "100%", height: "100%", borderRadius: "inherit" }) })) : null, /* @__PURE__ */ React.createElement("h1", { className: isProductPost ? "product-post-title" : "" }, isProductPost && post.productIcon ? /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { className: "page post-page" }, /* @__PURE__ */ React.createElement("article", { className: "detail-content-panel" }, /* @__PURE__ */ React.createElement("div", { className: "post-detail-toolbar" }, /* @__PURE__ */ React.createElement("a", { href: isProductPost ? "#products" : "#blog", className: "back-link" }, "\u2190 Back to ", isProductPost ? "products" : "blog"), /* @__PURE__ */ React.createElement(SharePageButton, { title: post.title, hashFragment: "#post/" + post.id })), post.cover ? /* @__PURE__ */ React.createElement("div", { className: "post-cover" }, /* @__PURE__ */ React.createElement("img", { src: resolveImageRef(post.cover), alt: "", style: getCoverImageStyle(post.coverPosition, post.coverZoom, { width: "100%", height: "100%", borderRadius: "inherit" }) })) : null, /* @__PURE__ */ React.createElement("h1", { className: isProductPost ? "product-post-title" : "" }, isProductPost && post.productIcon ? /* @__PURE__ */ React.createElement(
     "img",
     {
       className: "product-post-title-icon",
@@ -1488,7 +1522,7 @@ function ProductDetailPage({ id }) {
   if (!product) {
     return /* @__PURE__ */ React.createElement("div", { className: "page post-page" }, /* @__PURE__ */ React.createElement("a", { href: "#products", className: "back-link" }, "\u2190 Back to products"), /* @__PURE__ */ React.createElement("h1", null, "Not found"), /* @__PURE__ */ React.createElement("p", null, "We can't find that product."));
   }
-  return /* @__PURE__ */ React.createElement("div", { className: "page post-page product-detail-page" }, /* @__PURE__ */ React.createElement("article", { className: "detail-content-panel" }, /* @__PURE__ */ React.createElement("a", { href: "#products", className: "back-link" }, "\u2190 Back to products"), /* @__PURE__ */ React.createElement("div", { className: "product-detail-hero" }, /* @__PURE__ */ React.createElement(PhoneMockup, { src: product.hero, alt: product.name, className: "product-detail-phone" })), /* @__PURE__ */ React.createElement("div", { className: "meta" }, "PRODUCT \xB7 ", product.eyebrow), /* @__PURE__ */ React.createElement("h1", null, product.title || product.name), /* @__PURE__ */ React.createElement("div", { className: "post-body" }, /* @__PURE__ */ React.createElement("p", null, product.description)), /* @__PURE__ */ React.createElement("div", { className: "stores product-detail-stores" }, /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: product.appStore }), /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: product.googlePlay }))));
+  return /* @__PURE__ */ React.createElement("div", { className: "page post-page product-detail-page" }, /* @__PURE__ */ React.createElement("article", { className: "detail-content-panel" }, /* @__PURE__ */ React.createElement("div", { className: "post-detail-toolbar" }, /* @__PURE__ */ React.createElement("a", { href: "#products", className: "back-link" }, "\u2190 Back to products"), /* @__PURE__ */ React.createElement(SharePageButton, { title: product.title || product.name, hashFragment: "#product/" + id })), /* @__PURE__ */ React.createElement("div", { className: "product-detail-hero" }, /* @__PURE__ */ React.createElement(PhoneMockup, { src: product.hero, alt: product.name, className: "product-detail-phone" })), /* @__PURE__ */ React.createElement("div", { className: "meta" }, "PRODUCT \xB7 ", product.eyebrow), /* @__PURE__ */ React.createElement("h1", null, product.title || product.name), /* @__PURE__ */ React.createElement("div", { className: "post-body" }, /* @__PURE__ */ React.createElement("p", null, product.description)), /* @__PURE__ */ React.createElement("div", { className: "stores product-detail-stores" }, /* @__PURE__ */ React.createElement(StoreButton, { kind: "apple", href: product.appStore }), /* @__PURE__ */ React.createElement(StoreButton, { kind: "google", href: product.googlePlay }))));
 }
 function ProductsPage() {
   const productPosts = window.cheerStore.getPosts().filter((p) => p.published !== false && p.status === "product");

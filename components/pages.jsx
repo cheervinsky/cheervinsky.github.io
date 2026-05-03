@@ -519,6 +519,51 @@ function renderPostBody(body, editor = {}) {
   });
 }
 
+function buildShareUrl(hashFragment) {
+  const h = (hashFragment || '').startsWith('#') ? hashFragment : '#' + hashFragment;
+  if (typeof window === 'undefined') return h;
+  return window.location.origin + window.location.pathname + (window.location.search || '') + h;
+}
+
+function SharePageButton({ title, hashFragment }) {
+  const [hint, setHint] = useState('');
+
+  function onShare() {
+    const url = buildShareUrl(hashFragment);
+    const shareTitle = title && String(title).trim() ? String(title).trim() : 'Cheervinsky';
+    (async () => {
+      try {
+        if (typeof navigator !== 'undefined' && navigator.share) {
+          await navigator.share({ title: shareTitle, text: shareTitle, url });
+          return;
+        }
+      } catch (e) {
+        if (e && (e.name === 'AbortError' || e.name === 'NotAllowedError')) return;
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+          setHint('Link copied');
+          setTimeout(() => setHint(''), 2500);
+        } else {
+          window.prompt('Copy this link:', url);
+        }
+      } catch (e2) {
+        window.prompt('Copy this link:', url);
+      }
+    })();
+  }
+
+  return (
+    <div className="post-share-wrap">
+      <button type="button" className="btn ghost post-share-btn" onClick={onShare} aria-label="Share link to this page">
+        Share
+      </button>
+      {hint ? <span className="post-share-hint" role="status">{hint}</span> : null}
+    </div>
+  );
+}
+
 function PostPage({ id }) {
   const store = useStore();
   const isAdminSession = sessionStorage.getItem('cheer_admin_session') === '1';
@@ -537,7 +582,10 @@ function PostPage({ id }) {
   return (
     <div className="page post-page">
       <article className="detail-content-panel">
-        <a href={isProductPost ? '#products' : '#blog'} className="back-link">← Back to {isProductPost ? 'products' : 'blog'}</a>
+        <div className="post-detail-toolbar">
+          <a href={isProductPost ? '#products' : '#blog'} className="back-link">← Back to {isProductPost ? 'products' : 'blog'}</a>
+          <SharePageButton title={post.title} hashFragment={'#post/' + post.id} />
+        </div>
         {post.cover ? <div className="post-cover"><img src={resolveImageRef(post.cover)} alt="" style={getCoverImageStyle(post.coverPosition, post.coverZoom, { width: '100%', height: '100%', borderRadius: 'inherit' })} /></div> : null}
         <h1 className={isProductPost ? 'product-post-title' : ''}>
           {isProductPost && post.productIcon ? (
@@ -584,7 +632,10 @@ function ProductDetailPage({ id }) {
   return (
     <div className="page post-page product-detail-page">
       <article className="detail-content-panel">
-        <a href="#products" className="back-link">← Back to products</a>
+        <div className="post-detail-toolbar">
+          <a href="#products" className="back-link">← Back to products</a>
+          <SharePageButton title={product.title || product.name} hashFragment={'#product/' + id} />
+        </div>
         <div className="product-detail-hero">
           <PhoneMockup src={product.hero} alt={product.name} className="product-detail-phone" />
         </div>

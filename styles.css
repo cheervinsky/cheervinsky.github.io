@@ -1477,6 +1477,17 @@ img { display: block; max-width: 100%; }
   border: 1px solid rgba(255,255,255,0.86);
   box-shadow: 0 18px 40px -24px rgba(60,36,0,0.22);
 }
+.post-detail-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-bottom: 24px;
+}
+.post-detail-toolbar .back-link {
+  margin-bottom: 0;
+}
 .post-page .back-link {
   font-family: 'Vollkorn SC', serif;
   font-weight: 600;
@@ -1487,6 +1498,27 @@ img { display: block; max-width: 100%; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+.post-page .post-detail-toolbar .back-link {
+  margin-bottom: 0;
+}
+.post-share-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.post-share-btn {
+  font-family: 'Vollkorn SC', serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+.post-share-hint {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: 'Vollkorn SC', serif;
+  letter-spacing: 0.04em;
 }
 .post-page .post-cover {
   border-radius: var(--r-lg);
@@ -2716,6 +2748,58 @@ img { display: block; max-width: 100%; }
   .nav { gap: 18px; }
   .nav .socials { display: none; }
   .home-header { justify-content: flex-end; }
+  /* Stack brand + nav on narrow widths so the title never sits on top of menu links */
+  .site-header.header-blog,
+  .site-header.header-products,
+  .site-header.header-admin,
+  .site-header.header-contacts,
+  .site-header.header-post,
+  .site-header.header-product,
+  .site-header.home-header.home-header-scrolled {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    row-gap: 10px;
+    column-gap: 12px;
+    padding-left: max(14px, 4vw);
+    padding-right: max(14px, 4vw);
+  }
+  .site-header.header-blog .brand-mini,
+  .site-header.header-products .brand-mini,
+  .site-header.header-admin .brand-mini,
+  .site-header.header-contacts .brand-mini,
+  .site-header.header-post .brand-mini,
+  .site-header.header-product .brand-mini,
+  .site-header.home-header.home-header-scrolled .brand-mini {
+    min-width: 0;
+    flex: 0 1 auto;
+    max-width: 100%;
+  }
+  .site-header.header-blog .nav,
+  .site-header.header-products .nav,
+  .site-header.header-admin .nav,
+  .site-header.header-contacts .nav,
+  .site-header.header-post .nav,
+  .site-header.header-product .nav,
+  .site-header.home-header.home-header-scrolled .nav {
+    flex: 1 1 100%;
+    min-width: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    row-gap: 6px;
+  }
+  .site-header .brand-mini span {
+    display: inline-block;
+    max-width: min(280px, 70vw);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .site-header .nav a {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    padding: 4px 0;
+  }
   .route-home .hero-brand {
     text-align: center;
     padding-top: 10px;
@@ -2787,6 +2871,15 @@ img { display: block; max-width: 100%; }
   .route-home .pinned-glass-content,
   .route-home .carousel-glass .carousel-glass-content {
     max-width: 100%;
+  }
+  .post-detail-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .post-share-wrap {
+    width: 100%;
+    justify-content: flex-start;
   }
   .post-media-small,
   .post-media-medium,
