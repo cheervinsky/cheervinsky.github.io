@@ -246,10 +246,18 @@ function CurvyDivider() {
 //   data:...            -> inline base64 (legacy)
 //   http(s)://...       -> external URL (use directly)
 //   ghmedia/<filename>  -> committed to the GitHub repo's data/media/ folder
+//   data/media/<file>   -> same on disk; on production map to raw.githubusercontent.com
+//                           (GitHub Pages often does not publish data/ — only the repo does)
 //   media:<id>          -> IndexedDB blob (legacy; resolved async by callers)
 //   <anything else>     -> treated as a path relative to the page (e.g. 'assets/foo.png')
 function resolveImageRef(ref) {
   if (!ref || typeof ref !== 'string') return '';
+  const host = (typeof window !== 'undefined' && window.location && window.location.hostname) || '';
+  const isLocal = host === 'localhost' || host === '127.0.0.1';
+  if (ref.startsWith('data/media/') && !isLocal && window.cheerSync && window.cheerSync.rawUrl) {
+    const dataUrl = window.cheerSync.rawUrl(ref);
+    if (dataUrl) return dataUrl;
+  }
   if (ref.startsWith('ghmedia/') && window.cheerSync && window.cheerSync.rawUrl) {
     return window.cheerSync.rawUrl(ref) || '';
   }

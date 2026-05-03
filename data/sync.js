@@ -11,7 +11,7 @@
 //   - fetchPosts() -> Promise<state | null>  (null if file missing or fetch failed)
 //   - savePosts(state) -> Promise<{ ok, message }>
 //   - uploadMedia(filenameHint, blob) -> Promise<string>  (returns 'ghmedia/<filename>')
-//   - rawUrl(ref) -> string | null  (resolves a 'ghmedia/...' ref to a fetchable URL)
+//   - rawUrl(ref) -> string | null  (resolves 'ghmedia/...' or 'data/media/...' to raw.githubusercontent.com)
 (function () {
   const CONFIG = {
     // Must match the GitHub repo that holds data/posts.json (user/org site repo name).
@@ -38,10 +38,18 @@
 
   function rawUrl(ref) {
     if (!ref || typeof ref !== 'string') return null;
-    if (!ref.startsWith('ghmedia/')) return null;
-    const filename = ref.slice('ghmedia/'.length);
-    return 'https://raw.githubusercontent.com/' + CONFIG.owner + '/' + CONFIG.repo
-      + '/' + CONFIG.branch + '/' + CONFIG.mediaDir + '/' + filename;
+    if (ref.startsWith('ghmedia/')) {
+      const filename = ref.slice('ghmedia/'.length);
+      return 'https://raw.githubusercontent.com/' + CONFIG.owner + '/' + CONFIG.repo
+        + '/' + CONFIG.branch + '/' + CONFIG.mediaDir + '/' + filename;
+    }
+    // Same files as ghmedia/, but refs written by the local dev server (data/media/...).
+    if (ref.startsWith('data/media/')) {
+      const segments = ref.split('/').map(encodeURIComponent).join('/');
+      return 'https://raw.githubusercontent.com/' + CONFIG.owner + '/' + CONFIG.repo
+        + '/' + CONFIG.branch + '/' + segments;
+    }
+    return null;
   }
 
   // ---- Reading posts.json (no auth needed) ----

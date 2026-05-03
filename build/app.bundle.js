@@ -89,9 +89,15 @@ Finally. Markdown, PDF, or plain text. Your data, your file, no account required
   }
   function rawUrl(ref) {
     if (!ref || typeof ref !== "string") return null;
-    if (!ref.startsWith("ghmedia/")) return null;
-    const filename = ref.slice("ghmedia/".length);
-    return "https://raw.githubusercontent.com/" + CONFIG.owner + "/" + CONFIG.repo + "/" + CONFIG.branch + "/" + CONFIG.mediaDir + "/" + filename;
+    if (ref.startsWith("ghmedia/")) {
+      const filename = ref.slice("ghmedia/".length);
+      return "https://raw.githubusercontent.com/" + CONFIG.owner + "/" + CONFIG.repo + "/" + CONFIG.branch + "/" + CONFIG.mediaDir + "/" + filename;
+    }
+    if (ref.startsWith("data/media/")) {
+      const segments = ref.split("/").map(encodeURIComponent).join("/");
+      return "https://raw.githubusercontent.com/" + CONFIG.owner + "/" + CONFIG.repo + "/" + CONFIG.branch + "/" + segments;
+    }
+    return null;
   }
   async function fetchPosts() {
     try {
@@ -867,6 +873,12 @@ function CurvyDivider() {
 }
 function resolveImageRef(ref) {
   if (!ref || typeof ref !== "string") return "";
+  const host = typeof window !== "undefined" && window.location && window.location.hostname || "";
+  const isLocal = host === "localhost" || host === "127.0.0.1";
+  if (ref.startsWith("data/media/") && !isLocal && window.cheerSync && window.cheerSync.rawUrl) {
+    const dataUrl = window.cheerSync.rawUrl(ref);
+    if (dataUrl) return dataUrl;
+  }
   if (ref.startsWith("ghmedia/") && window.cheerSync && window.cheerSync.rawUrl) {
     return window.cheerSync.rawUrl(ref) || "";
   }
