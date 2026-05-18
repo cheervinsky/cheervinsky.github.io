@@ -14,7 +14,7 @@ function Carousel() {
       hero: p.homeImage || p.cover || '',
       heroPosition: p.homeImagePosition || '50% 50%',
       heroZoom: p.homeImageZoom || 100,
-      productIcon: p.productIcon || '',
+      productIcon: resolveImageRef(p.productIcon || ''),
       productIconSize: Math.max(12, Math.min(140, parseInt(p.productIconSize, 10) || 34)),
       productIconGap: Math.max(-80, Math.min(80, parseInt(p.productIconGap, 10) || 8)),
       productIconShiftX: Math.max(-120, Math.min(120, parseInt(p.productIconShiftX, 10) || 0)),
